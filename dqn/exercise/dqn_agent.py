@@ -34,9 +34,11 @@ class Agent():
         self.seed = random.seed(seed)
 
         # Q-Network
-        self.qnetwork_local = QNetwork(state_size, action_size, seed).to(device)
+        self.qnetwork_local  = QNetwork(state_size, action_size, seed).to(device)
         self.qnetwork_target = QNetwork(state_size, action_size, seed).to(device)
-        self.optimizer = optim.Adam(self.qnetwork_local.parameters(), lr=LR)
+        try:                   qnetwork_parameters = self.qnetwork_local.parameters()
+        except Exception as e: qnetwork_parameters = {}; print('self.qnetwork_local.parameters()', e)
+        self.optimizer = optim.Adam(qnetwork_parameters, lr=LR)
 
         # Replay memory
         self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed)

@@ -1,0 +1,5 @@
+Box2D
+box2d-py
+gym[all]
+gym[Box_2D]
+mujoco-py<2.1,>=2.0
