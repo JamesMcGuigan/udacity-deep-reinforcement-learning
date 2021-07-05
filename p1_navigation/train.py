@@ -27,9 +27,9 @@ def train_dqn(
     scores = []                        # list containing scores from each episode
     try:
         print('train_dqn(', {
-            'env': env,
-            'agent': agent,
-            'filename': filename,
+            # 'env': env,
+            # 'agent': agent,
+            # 'filename': filename,
             'obs_attr': obs_attr,
             'n_episodes': n_episodes,
             'max_t': max_t,
@@ -61,7 +61,9 @@ def train_dqn(
                 state      = next_state                         # roll over the state to next time step
                 score     += reward
 
-                if exit_after_first_reward and score != 0: break
+                agent.step(state, action, reward, next_state, done)
+
+                if exit_after_first_reward and score != 0: break  # keep going until at least one yellow banana
                 if done: break
 
             scores_window.append(score)       # save most recent score
@@ -77,7 +79,8 @@ def train_dqn(
                 agent.save(filename)
 
     except KeyboardInterrupt as exception:
-        agent.save(filename)
+        # agent.save(filename)
+        pass
 
     return scores
 
@@ -86,13 +89,13 @@ def train_dqn(
 if __name__ == '__main__':
     env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
     agent = Agent.from_env(env)  #  state_size == 37, action_size == 4
-    agent.load('checkpoint.pth')
+    # agent.load('model.pth')
 
     # Increment max_t to assist with finding the first banana
     scores  = []
-    scores += train_dqn(env, agent, filename='checkpoint.pth', exit_after_first_reward=True)
-    scores += train_dqn(env, agent, filename='checkpoint.pth')
-    agent.save('checkpoint.pth')
+    # scores += train_dqn(env, agent, filename='model.pth', exit_after_first_reward=True)
+    scores += train_dqn(env, agent, filename='model.pth')
+    # agent.save('model.pth')
 
     # plot the scores
     fig = plt.figure()
