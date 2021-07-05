@@ -5,6 +5,7 @@ from collections import namedtuple, deque
 import numpy as np
 import torch
 import torch.optim as optim
+import torch.nn.functional as F
 
 from model import QNetwork
 
@@ -111,6 +112,7 @@ class Agent():
         else:
             return random.choice(np.arange(self.action_size))
 
+
     def learn(self, experiences, gamma):
         """Update value parameters using given batch of experience tuples.
 
@@ -121,11 +123,18 @@ class Agent():
         """
         states, actions, rewards, next_states, dones = experiences
 
-        ## TODO: compute and minimize the loss
-        "*** YOUR CODE HERE ***"
+        Q_targets_next = self.qnetwork_target(next_states).detach().max(1)[0].unsqueeze(1)
+        Q_targets      = rewards + (gamma * Q_targets_next * (1 - dones))
+        Q_expected     = self.qnetwork_local(states).gather(1, actions)
+        loss           = F.mse_loss(Q_expected, Q_targets)
+
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
 
         # ------------------- update target network ------------------- #
         self.soft_update(self.qnetwork_local, self.qnetwork_target, TAU)
+
 
     def soft_update(self, local_model, target_model, tau):
         """Soft update model parameters.
