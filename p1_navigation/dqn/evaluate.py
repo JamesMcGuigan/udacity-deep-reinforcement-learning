@@ -25,7 +25,7 @@ def evaluate_agent(env, agent):
 
 
 if __name__ == '__main__':
-    env   = UnityEnvironment(file_name="../Banana_Linux/Banana.x86_64")
+    env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
     agent = Agent.from_env(env)  #  state_size == 37, action_size == 4
-    agent.load('checkpoint.pth')
+    agent.load('model.pth')
     evaluate_agent(env, agent)

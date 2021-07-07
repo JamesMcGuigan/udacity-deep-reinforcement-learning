@@ -90,7 +90,7 @@ def train_dqn(
 
 
 if __name__ == '__main__':
-    env   = UnityEnvironment(file_name="../Banana_Linux/Banana.x86_64")
+    env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
     agent = Agent.from_env(env)  #  state_size == 37, action_size == 4
     # agent.load('model.pth')
 
@@ -104,6 +104,7 @@ if __name__ == '__main__':
     fig = plt.figure()
     ax = fig.add_subplot(111)
     plt.plot(np.arange(len(scores)), scores)
+    plt.title('Plot of Rewards')
     plt.ylabel('Score')
     plt.xlabel('Episode #')
     plt.show()

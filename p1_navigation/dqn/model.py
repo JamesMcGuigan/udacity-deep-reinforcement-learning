@@ -15,19 +15,23 @@ class QNetwork(nn.Module):
             seed (int): Random seed
         """
         super(QNetwork, self).__init__()
-        self.seed   = torch.manual_seed(seed)
-        self.fc1    = nn.Linear(state_size, fc1_units)
-        self.fc2    = nn.Linear(fc1_units,  fc2_units)
-        self.fc3    = nn.Linear(fc2_units,  fc3_units)
-        self.fc4    = nn.Linear(fc3_units,  action_size)
+        self.seed = torch.manual_seed(seed)
+        self.fc1  = nn.Linear(state_size, fc1_units)
+        self.fc2  = nn.Linear(fc1_units,  fc2_units)
+        self.fc3  = nn.Linear(fc2_units,  fc3_units)
+        self.fc4  = nn.Linear(fc3_units,  action_size)
+
+        self.bn1  = nn.BatchNorm1d(num_features=fc1_units)
+        self.bn2  = nn.BatchNorm1d(num_features=fc2_units)
+        self.bn3  = nn.BatchNorm1d(num_features=fc3_units)
 
 
     def forward(self, state):
         """Build a network that maps state -> action values."""
         x = state
-        x = F.leaky_relu(self.fc1(x))
-        x = F.leaky_relu(self.fc2(x))
-        x = F.leaky_relu(self.fc3(x))
-        x = self.fc4(x)
+        x = F.leaky_relu(self.bn1(self.fc1(x)))
+        x = F.leaky_relu(self.bn2(self.fc2(x)))
+        x = F.leaky_relu(self.bn3(self.fc3(x)))
+        x = F.softmax(self.fc4(x))
 
         return x
