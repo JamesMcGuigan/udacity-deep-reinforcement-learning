@@ -10,6 +10,7 @@ from dqn_agent import Agent
 def train_dqn(
     env, agent, filename,
     obs_attr='vector_observations',  # vector_observations || visual_observations
+    # obs_attr='visual_observations',  # vector_observations || visual_observations
     n_episodes=2000, max_t=100, eps_start=1.0, eps_end=0.01, eps_decay=0.995,
     score_window_size=100, win_score=13,
     exit_after_first_reward=False,
@@ -49,7 +50,9 @@ def train_dqn(
         eps = eps_start                    # initialize epsilon
         for i_episode in range(1, n_episodes+1):
             env_info = env.reset(train_mode=True)[brain_name]
-            state    = getattr(env_info, obs_attr)[0]    # get the next state
+            if obs_attr == 'vector_observations': state = env_info.vector_observations[0]
+            if obs_attr == 'visual_observations': state = env_info.visual_observations[0]  # is always empty list
+
 
             score = 0
             for t in range(max_t):
@@ -87,7 +90,7 @@ def train_dqn(
 
 
 if __name__ == '__main__':
-    env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
+    env   = UnityEnvironment(file_name="../Banana_Linux/Banana.x86_64")
     agent = Agent.from_env(env)  #  state_size == 37, action_size == 4
     # agent.load('model.pth')
 
