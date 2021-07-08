@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from unityagents import UnityEnvironment
 
-from dqn_agent import Agent
+from dqn.dqn_agent import Agent
 
 
 def train_dqn(
