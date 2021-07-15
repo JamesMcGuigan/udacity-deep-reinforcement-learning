@@ -1,4 +1,4 @@
-from collections import deque, defaultdict
+from collections import deque
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -6,7 +6,7 @@ from unityagents import UnityEnvironment
 
 from src.ReplayBuffer import Experience
 from src.dqn_agent import DQNAgent
-from src.model import QNetwork
+from src.model import DuelingQNetwork
 
 
 def train_dqn(
@@ -17,7 +17,7 @@ def train_dqn(
         max_t=100,
         eps_start=1.0,
         eps_end=0.01,
-        eps_decay=0.99,
+        eps_decay=0.995,
         score_window_size=100, win_score=13,
         exit_after_first_reward=False,
         future_reward_decay=0,
@@ -122,28 +122,22 @@ if __name__ == '__main__':
     env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
     state_size, action_size = DQNAgent.get_env_state_action_size(env)  #  state_size == 37, action_size == 4
 
-    scores = defaultdict(list)
-    for future_reward_decay in [1, 0.9, 0]:
-        modelname = f'dqn@future_reward_{future_reward_decay}'
-        agent     = DQNAgent(state_size, action_size, model_class=QNetwork, update_type='dqn')
-        scores[future_reward_decay] = train_dqn(
-            env,
-            agent,
-            n_episodes=2000,
-            future_reward_decay=future_reward_decay,
-            filename=f'models/{modelname}.pth'
-        )
+    scores = []
+    modelname = f'dueling_dqn'
+    agent     = DQNAgent(state_size, action_size, model_class=DuelingQNetwork)
+    scores   += train_dqn(
+        env,
+        agent,
+        n_episodes=5000,
+        filename=f'models/{modelname}.pth'
+    )
 
-        # plot the scores
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        plt.plot(np.arange(len(scores[future_reward_decay])), scores[future_reward_decay])
-        plt.title('Plot of Rewards')
-        plt.ylabel('Score')
-        plt.xlabel('Episode #')
-        plt.savefig(f'models/{modelname}.png', bbox_inches='tight')
-        plt.show()
-
-
-    for future_reward_decay, score in scores.items():
-        print(f'eps_decay = {future_reward_decay} | average_score = {np.mean(score[:-100])}')
+    # plot the scores
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    plt.plot(np.arange(len(scores)), scores)
+    plt.title('Plot of Rewards')
+    plt.ylabel('Score')
+    plt.xlabel('Episode #')
+    plt.savefig(f'models/{modelname}.png', bbox_inches='tight')
+    plt.show()
