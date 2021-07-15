@@ -1,6 +1,6 @@
 # Project 1: Navigation with Deep Q Learning
 
-## [evaluate.py](dqn/evaluate.py)
+## [evaluate.py](src/evaluate.py)
 
 ```
 conda activate drlnd
@@ -19,7 +19,7 @@ while not done:
 - `env` is the a UnityEnvironment representing the game, which the agent must navigate through
 
 
-## [train.py](dqn/train.py)
+## [train.py](src/train.py)
 
 ```
 conda activate drlnd
@@ -39,12 +39,12 @@ Issues:
 - This suggests an important step is missing from the training loop, or else the loss function or neural network shape is incorrect
 
 
-## [dqn_agent.py](dqn/dqn_agent.py)
+## [dqn_agent.py](src/dqn_agent.py)
 
 This mostly mirrors the code from the DQN example notebooks, but adds in `.load()`, `.save()` and `.from_env()` helper methods
 
 
-## [model.py](dqn/model.py)
+## [model.py](src/model.py)
 
 This represents the deep Q neural network behind the agent.
 
@@ -57,7 +57,7 @@ Adding in BatchNorm then Softmax to the last layer doesn't seem to have any addi
 
 The plot of rewards shows a random walk around the zero score, without ever converging on a winning strategy.
 
-![](report_plot_of_rewards.png)
+![](models/dqn@future_reward_1.png)
 
 # Ideas for Future Work
 
