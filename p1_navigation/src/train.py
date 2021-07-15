@@ -4,9 +4,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 from unityagents import UnityEnvironment
 
-from dqn.ReplayBuffer import Experience
-from dqn.dqn_agent import DQNAgent
-from dqn.model import QNetwork
+from src.ReplayBuffer import Experience
+from src.dqn_agent import DQNAgent
+from src.model import QNetwork
 
 
 def train_dqn(
