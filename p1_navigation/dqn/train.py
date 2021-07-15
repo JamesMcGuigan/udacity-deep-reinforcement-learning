@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from unityagents import UnityEnvironment
 
-from dqn.dqn_agent import Agent
+from dqn.dqn_agent import DQNAgent
 from dqn.model import QNetwork
 
 
@@ -93,8 +93,8 @@ def train_dqn(
 
 if __name__ == '__main__':
     env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
-    state_size, action_size = Agent.get_env_state_action_size(env)
-    agent = Agent(state_size, action_size, model_class=QNetwork, update_type='dqn')  #  state_size == 37, action_size == 4
+    state_size, action_size = DQNAgent.get_env_state_action_size(env)
+    agent = DQNAgent(state_size, action_size, model_class=QNetwork, update_type='dqn')  #  state_size == 37, action_size == 4
     # agent.load('model.pth')
 
     # Increment max_t to assist with finding the first banana

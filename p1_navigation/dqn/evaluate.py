@@ -1,6 +1,6 @@
 from unityagents import UnityEnvironment
 
-from dqn_agent import Agent
+from dqn_agent import DQNAgent
 
 
 def evaluate_agent(env, agent):
@@ -26,6 +26,6 @@ def evaluate_agent(env, agent):
 
 if __name__ == '__main__':
     env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
-    agent = Agent.from_env(env)  #  state_size == 37, action_size == 4
+    agent = DQNAgent.from_env(env)  #  state_size == 37, action_size == 4
     agent.load('model.pth')
     evaluate_agent(env, agent)
