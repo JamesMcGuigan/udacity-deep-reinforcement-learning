@@ -5,15 +5,16 @@ from matplotlib import pyplot as plt
 from unityagents import UnityEnvironment
 
 from dqn.dqn_agent import Agent
+from dqn.model import QNetwork
 
 
 def train_dqn(
-    env, agent, filename,
-    obs_attr='vector_observations',  # vector_observations || visual_observations
-    # obs_attr='visual_observations',  # vector_observations || visual_observations
-    n_episodes=2000, max_t=100, eps_start=1.0, eps_end=0.01, eps_decay=0.995,
-    score_window_size=100, win_score=13,
-    exit_after_first_reward=False,
+        env, agent, filename,
+        obs_attr='vector_observations',  # vector_observations || visual_observations
+        # obs_attr='visual_observations',  # vector_observations || visual_observations
+        n_episodes=2000, max_t=100, eps_start=1.0, eps_end=0.01, eps_decay=0.995,
+        score_window_size=100, win_score=13,
+        exit_after_first_reward=False,
 ):
     """Deep Q-Learning.
 
@@ -41,10 +42,10 @@ def train_dqn(
             'win_score': win_score,
             'exit_after_first_reward': exit_after_first_reward,
         }, ')')
-        
+
         brain_name  = env.brain_names[0]
         brain       = env.brains[brain_name]
-        action_size = brain.vector_action_space_size        # action_size == 4
+        # action_size = brain.vector_action_space_size        # action_size == 4
 
         scores_window = deque(maxlen=score_window_size)  # last 100 scores
         eps = eps_start                    # initialize epsilon
@@ -53,18 +54,19 @@ def train_dqn(
             if obs_attr == 'vector_observations': state = env_info.vector_observations[0]
             if obs_attr == 'visual_observations': state = env_info.visual_observations[0]  # is always empty list
 
-
             score = 0
+            state = getattr(env_info, obs_attr)[0]
             for t in range(max_t):
                 action     = agent.act(state)
                 env_info   = env.step(action)[brain_name]       # send the action to the environment
                 next_state = getattr(env_info, obs_attr)[0]
                 reward     = env_info.rewards[0]                # get the reward
                 done       = env_info.local_done[0]             # see if episode has finished
-                state      = next_state                         # roll over the state to next time step
-                score     += reward
 
                 agent.step(state, action, reward, next_state, done)
+
+                state      = next_state                         # roll over the state to next time step
+                score     += reward
 
                 if exit_after_first_reward and score != 0: break  # keep going until at least one yellow banana
                 if done: break
@@ -72,10 +74,10 @@ def train_dqn(
             scores_window.append(score)       # save most recent score
             scores.append(score)              # save most recent score
             eps = max(eps_end, eps_decay*eps) # decrease epsilon
-            print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
+            print('\rEpisode {:4d}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
 
             if i_episode % 100 == 0:
-                print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)))
+                print('\rEpisode {:4d}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)))
 
             if np.mean(scores_window) >= win_score:
                 print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i_episode-100, np.mean(scores_window)))
@@ -91,7 +93,8 @@ def train_dqn(
 
 if __name__ == '__main__':
     env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
-    agent = Agent.from_env(env)  #  state_size == 37, action_size == 4
+    state_size, action_size = Agent.get_env_state_action_size(env)
+    agent = Agent(state_size, action_size, model_class=QNetwork, update_type='dqn')  #  state_size == 37, action_size == 4
     # agent.load('model.pth')
 
     # Increment max_t to assist with finding the first banana

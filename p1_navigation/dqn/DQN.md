@@ -1,4 +1,4 @@
-# Rainbow DQN
+# DQN
 
 ## Game Mechanics
 
@@ -147,12 +147,12 @@ To detect velocity and motion within otherwise static pixel data, it is possible
 2-4 timeframe slices, which will expose the neutral network to relative changes over time. The same action
 can be persisted until the end of the next batch window.
 
-
+sa
 
 
 # Papers
 
-- [How to Read and Understand a Scientific Paper: A Step-by-Step Guide for Non-Scientists](https://www.huffpost.com/entry/how-to-read-and-understand-a-scientific-paper_b_5501628)
+- [Playing Atari with Deep Reinforcement Learning](https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf)
 
 - [Issues in Using Function Approximation for Reinforcement Learning - Sebastian Thrun, Anton Schwartz](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.73.3097&rep=rep1&type=pdf)
 
@@ -160,3 +160,5 @@ can be persisted until the end of the next batch window.
   learning](https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf)
 
 - [Improvements in Deep Q Learning: Dueling Double DQN, Prioritized Experience Replay, and fixed Q-targets](https://medium.com/free-code-camp/improvements-in-deep-q-learning-dueling-double-dqn-prioritized-experience-replay-and-fixed-58b130cc5682)
+
+- [How to Read and Understand a Scientific Paper: A Step-by-Step Guide for Non-Scientists](https://www.huffpost.com/entry/how-to-read-and-understand-a-scientific-paper_b_5501628)
