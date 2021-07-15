@@ -31,5 +31,5 @@ cd p1_navigation
 conda create --name drlnd python=3.6 
 conda activate drlnd
 python -m ipykernel install --user --name drlnd --display-name "drlnd"
-pip install -r dqn/exercise/requirements.txt
+pip install -r requirements.txt
 ```

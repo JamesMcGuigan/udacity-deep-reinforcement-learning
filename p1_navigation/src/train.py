@@ -1,3 +1,4 @@
+import time
 from collections import deque
 
 import numpy as np
@@ -5,8 +6,9 @@ from matplotlib import pyplot as plt
 from unityagents import UnityEnvironment
 
 from src.ReplayBuffer import Experience
+from src.libs.contextmanager import capture
 from src.dqn_agent import DQNAgent
-from src.model import DuelingQNetwork
+from src.model import DuelingQNetwork, QNetwork
 
 
 def train_dqn(
@@ -20,7 +22,7 @@ def train_dqn(
         eps_decay=0.995,
         score_window_size=100, win_score=13,
         exit_after_first_reward=False,
-        future_reward_decay=0,
+        use_future_reward=False,
 ):
     """Deep Q-Learning.
 
@@ -47,7 +49,7 @@ def train_dqn(
             'score_window_size': score_window_size,
             'win_score': win_score,
             'exit_after_first_reward': exit_after_first_reward,
-            'future_reward_decay': future_reward_decay,
+            'use_future_reward': use_future_reward,
         }, ')')
 
         brain_name  = env.brain_names[0]
@@ -71,7 +73,10 @@ def train_dqn(
                 reward     = env_info.rewards[0]                # get the reward
                 done       = env_info.local_done[0]             # see if episode has finished
 
-                trajectory.append( Experience(state, action, reward, next_state, done) )
+                if use_future_reward:
+                    trajectory.append( Experience(state, action, reward, next_state, done) )
+                else:
+                    agent.step(state, action, reward, next_state, done)
 
                 state      = next_state                         # roll over the state to next time step
                 score     += reward
@@ -81,20 +86,22 @@ def train_dqn(
 
             # As rewards are sparse, using decayed future reward allows training on events leading upto a banana
             # This tends to speed up very early stage training, but tends to converge to lower average scores
-            #   future_reward_decay = 1.0 | Episode 2000	Average Score: 4.33
-            #   future_reward_decay = 0.9 | Episode 2000	Average Score: 3.56
-            #   future_reward_decay = 0.0 | Episode 2000	Average Score: 5.51
-            if future_reward_decay:
+            # Using eps as the decay factor seems to work as well as not using future_rewards
+            #   use_future_reward = 1.0 | Episode 2000	Average Score: 4.33
+            #   use_future_reward = 0.9 | Episode 2000	Average Score: 3.56
+            #   use_future_reward = 0.0 | Episode 2000	Average Score: 5.51
+            #   use_future_reward = eps | Episode 2000	Average Score: 5.36
+            if use_future_reward:
                 future_reward = 0
                 for n in range(len(trajectory)):
                     state, action, reward, next_state, done = trajectory[-n]
-                    future_reward *= future_reward_decay
+                    future_reward *= eps   # was: *= use_future_reward
                     future_reward += reward
                     trajectory[-n] = Experience(state, action, future_reward, next_state, done)
 
-            for experience in trajectory:
-                state, action, reward, next_state, done = experience
-                agent.step(state, action, reward, next_state, done)
+                for experience in trajectory:
+                    state, action, reward, next_state, done = experience
+                    agent.step(state, action, reward, next_state, done)
 
 
             scores_window.append(score)       # save most recent score
@@ -109,6 +116,7 @@ def train_dqn(
                 print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'
                       .format(i_episode-100, np.mean(scores_window)))
                 agent.save(filename)
+                break
 
     except KeyboardInterrupt as exception:
         # agent.save(filename)
@@ -122,22 +130,39 @@ if __name__ == '__main__':
     env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
     state_size, action_size = DQNAgent.get_env_state_action_size(env)  #  state_size == 37, action_size == 4
 
-    scores = []
-    modelname = f'dueling_dqn'
-    agent     = DQNAgent(state_size, action_size, model_class=DuelingQNetwork)
-    scores   += train_dqn(
-        env,
-        agent,
-        n_episodes=5000,
-        filename=f'models/{modelname}.pth'
-    )
+    configs = [
+        { "model_name": "dqn",         "model_class": QNetwork },
+        { "model_name": "dueling_dqn", "model_class": DuelingQNetwork }
+    ]
+    for config in configs:
+        time_start = time.perf_counter()
+        with capture() as stdout:
+            print(f'\nconfig: {config}')
+            scores = []
+            model_name = config['model_name']
+            agent      = DQNAgent(state_size, action_size, model_class=config['model_class'])
+            # agent.load(f'models/{model_name}.pth')
+            scores    += train_dqn(
+                env,
+                agent,
+                max_t=1000,
+                n_episodes=5000,
+                filename=f'models/{model_name}.pth'
+            )
+            # agent.save(f'models/{model_name}.pth')
+            time_taken = time.perf_counter() - time_start
+            print(f'Time: {time_taken:.1f}s')
 
-    # plot the scores
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    plt.plot(np.arange(len(scores)), scores)
-    plt.title('Plot of Rewards')
-    plt.ylabel('Score')
-    plt.xlabel('Episode #')
-    plt.savefig(f'models/{modelname}.png', bbox_inches='tight')
-    plt.show()
+        print("\n".join(stdout))
+        with open(f'models/{model_name}.log', 'w') as f:
+            f.write("\n".join(stdout))
+
+        # plot the scores
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        plt.plot(np.arange(len(scores)), scores)
+        plt.title(f'Plot of Rewards: {model_name}')
+        plt.ylabel('Score')
+        plt.xlabel('Episode #')
+        plt.savefig(f'models/{model_name}.png', bbox_inches='tight')
+        plt.show()

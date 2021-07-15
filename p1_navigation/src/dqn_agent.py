@@ -23,7 +23,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 class DQNAgent():
     """Interacts with and learns from the environment."""
 
-    def __init__(self, state_size, action_size, model_class=QNetwork, update_type='dqn', seed=0):
+    def __init__(self, state_size, action_size, model_class=QNetwork, update_type='dqn', seed=42):
         """Initialize an Agent object.
 
         Params
