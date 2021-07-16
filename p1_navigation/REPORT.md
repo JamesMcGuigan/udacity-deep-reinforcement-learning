@@ -92,7 +92,33 @@ lr=1e-5 Environment unsolved after 1000 episodes!  Average Score: 11.80 | Time 9
 
 ## Gamma
 
+Gamma is the discount factor for the Target Q Network when comparing it to actual rewards as part of the loss function.
+
+percentage when soft updating between local and target Q neural networks.
+
+Hyperparameter tuning shows 0.9-1.0 are reasonable values, though 0.99 is optimal. Smaller values fail to converge.
+
+```
+models/dqn@gamma=1.log    | Environment solved in 494 episodes!         Average Score: 13.06 | Time: 553s
+models/dqn@gamma=0.99.log | Environment solved in 430 episodes!         Average Score: 13.03 | Time: 485s
+models/dqn@gamma=0.9.log  | Environment solved in 449 episodes!         Average Score: 13.00 | Time: 506s
+models/dqn@gamma=0.5.log  | Environment unsolved after 1000 episodes!   Average Score:  1.49 | Time: 929s
+models/dqn@gamma=0.log    | Environment unsolved after 1000 episodes!   Average Score:  0.43 | Time: 938s
+```
+
 ## Tau
+
+Tau is the percentage when soft updating between local and target Q neural networks.
+
+Hyperparameter tuning shows 1e-3 = 0.001 is the optimal value
+
+```
+models/dqn@tau=1e-1.log | Environment solved in 704 episodes!          Average Score: 13.00 | Time: 744s
+models/dqn@tau=1e-2.log | Environment solved in 535 episodes!          Average Score: 13.02 | Time: 579s
+models/dqn@tau=1e-3.log | Environment solved in 401 episodes!          Average Score: 13.01 | Time: 517s
+models/dqn@tau=1e-4.log | Environment unsolved after 1000 episodes!    Average Score:  8.81 | Time: 962s
+models/dqn@tau=1e-5.log | Environment unsolved after 1000 episodes!    Average Score:  0.19 | Time: 943s
+```
 
 ## Buffer Size
 

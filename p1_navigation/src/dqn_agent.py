@@ -19,9 +19,9 @@ class DQNAgent:
             self,
             state_size,
             action_size,
-            model_class=QNetwork,
-            update_type='dqn',
-            seed=42,
+            model_class  = QNetwork,
+            update_type  = 'dqn',
+            seed         = 42,
             LR           = 1e-3,      # 1e-3 has optimal training times
             GAMMA        = 0.99,      # discount factor
             TAU          = 1e-3,      # for soft update of target parameters
