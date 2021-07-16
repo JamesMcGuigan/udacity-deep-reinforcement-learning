@@ -8,6 +8,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from src.ReplayBuffer import ReplayBuffer
+from src.SumTree import SumTreeReplayBuffer
 from src.model import QNetwork
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -21,6 +22,7 @@ class DQNAgent:
             action_size,
             model_class  = QNetwork,
             update_type  = 'dqn',
+            memory_type  = 'random',  # 'random' or 'subtree' | subtree fails to converge
             seed         = 42,
             LR           = 1e-3,      # 1e-3 has optimal training times
             GAMMA        = 0.99,      # discount factor
@@ -50,18 +52,19 @@ class DQNAgent:
         self.state_size  = state_size
         self.action_size = action_size
         self.update_type = update_type
+        self.memory_type = memory_type
 
         # Q-Network
         self.qnetwork_local  = model_class(state_size, action_size, seed, **kwargs).to(device)
         self.qnetwork_target = model_class(state_size, action_size, seed, **kwargs).to(device)
         self.optimizer       = optim.Adam(self.qnetwork_local.parameters(), lr=LR)
 
-        # try:                   qnetwork_parameters = self.qnetwork_local.parameters()
-        #     except Exception as e: qnetwork_parameters = {}; print('self.qnetwork_local.parameters()', e)
-        #     self.optimizer = optim.Adam(qnetwork_parameters, lr=LR)
-
         # Replay memory
-        self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed)
+        # NOTE: training using SumTreeReplayBuffer fails to converge
+        if   self.memory_type == 'subtree': self.memory = SumTreeReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed)
+        elif self.memory_type == 'random':  self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed)
+        else: raise ValueError(f'{self.__class__.__name__}() - invalid self.memory_type: {self.memory_type}')
+
         # Initialize time step (for updating every UPDATE_EVERY steps)
         self.t_step = 0
 
@@ -112,7 +115,10 @@ class DQNAgent:
             # If enough samples are available in memory, get random subset and learn
             if len(self.memory) > self.BATCH_SIZE:
                 experiences = self.memory.sample()
-                self.learn(experiences, self.GAMMA)
+                if experiences is not None:
+                    td_error = self.learn(experiences, self.GAMMA)
+                    if callable(getattr(self.memory, 'update', None)):
+                        self.memory.update(experiences, td_error)
 
 
     def act(self, state, eps=0.):
@@ -144,12 +150,13 @@ class DQNAgent:
             experiences (Tuple[torch.Tensor]): tuple of (s, a, r, s', done) tuples
             gamma (float): discount factor
         """
-        states, actions, rewards, next_states, dones = experiences
+        states, actions, rewards, next_states, dones, idxs = experiences
 
         Q_targets_next = self.qnetwork_target(next_states).detach().max(1)[0].unsqueeze(1)
         Q_targets      = rewards + (gamma * Q_targets_next * (1 - dones))
         Q_expected     = self.qnetwork_local(states).gather(1, actions)
 
+        td_error       = (Q_targets - Q_expected) ** 2
         loss           = F.mse_loss(Q_expected, Q_targets)
         self.optimizer.zero_grad()
         loss.backward()
@@ -157,6 +164,7 @@ class DQNAgent:
 
         # ------------------- update target network ------------------- #
         self.soft_update(self.qnetwork_local, self.qnetwork_target, self.TAU)
+        return td_error.detach().cpu()
 
 
     def soft_update(self, local_model, target_model, tau):

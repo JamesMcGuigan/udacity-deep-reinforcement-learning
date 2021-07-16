@@ -6,9 +6,9 @@ from matplotlib import pyplot as plt
 from unityagents import UnityEnvironment
 
 from src.ReplayBuffer import Experience
-from src.libs.contextmanager import capture
 from src.dqn_agent import DQNAgent
-from src.model import DuelingQNetwork, QNetwork
+from src.libs.contextmanager import capture
+from src.model import QNetwork
 
 
 def train_dqn(
@@ -152,17 +152,20 @@ if __name__ == '__main__':
         # { "model_name": "dqn@lr=1e-4",   "model_class": QNetwork, "kwargs": { "LR": 1e-4 } },
         # { "model_name": "dqn@lr=1e-5",   "model_class": QNetwork, "kwargs": { "LR": 1e-5 } },
 
-        { "model_name": "dqn@tau=1e-1",    "model_class": QNetwork, "kwargs": { "TAU": 1e-1 } },
-        { "model_name": "dqn@tau=1e-2",    "model_class": QNetwork, "kwargs": { "TAU": 1e-2 } },
-        { "model_name": "dqn@tau=1e-3",    "model_class": QNetwork, "kwargs": { "TAU": 1e-3 } },
-        { "model_name": "dqn@tau=1e-4",    "model_class": QNetwork, "kwargs": { "TAU": 1e-4 } },
-        { "model_name": "dqn@tau=1e-5",    "model_class": QNetwork, "kwargs": { "TAU": 1e-5 } },
+        # { "model_name": "dqn@tau=1e-1",    "model_class": QNetwork, "kwargs": { "TAU": 1e-1 } },
+        # { "model_name": "dqn@tau=1e-2",    "model_class": QNetwork, "kwargs": { "TAU": 1e-2 } },
+        # { "model_name": "dqn@tau=1e-3",    "model_class": QNetwork, "kwargs": { "TAU": 1e-3 } },
+        # { "model_name": "dqn@tau=1e-4",    "model_class": QNetwork, "kwargs": { "TAU": 1e-4 } },
+        # { "model_name": "dqn@tau=1e-5",    "model_class": QNetwork, "kwargs": { "TAU": 1e-5 } },
+        #
+        # { "model_name": "dqn@gamma=1",     "model_class": QNetwork, "kwargs": { "GAMMA": 1     } },
+        # { "model_name": "dqn@gamma=0.99",  "model_class": QNetwork, "kwargs": { "GAMMA": 0.99  } },
+        # { "model_name": "dqn@gamma=0.9",   "model_class": QNetwork, "kwargs": { "GAMMA": 0.9   } },
+        # { "model_name": "dqn@gamma=0.5",   "model_class": QNetwork, "kwargs": { "GAMMA": 0.5   } },
+        # { "model_name": "dqn@gamma=0",     "model_class": QNetwork, "kwargs": { "GAMMA": 0     } },
 
-        { "model_name": "dqn@gamma=1",     "model_class": QNetwork, "kwargs": { "GAMMA": 1     } },
-        { "model_name": "dqn@gamma=0.99",  "model_class": QNetwork, "kwargs": { "GAMMA": 0.99  } },
-        { "model_name": "dqn@gamma=0.9",   "model_class": QNetwork, "kwargs": { "GAMMA": 0.9   } },
-        { "model_name": "dqn@gamma=0.5",   "model_class": QNetwork, "kwargs": { "GAMMA": 0.5   } },
-        { "model_name": "dqn@gamma=0",     "model_class": QNetwork, "kwargs": { "GAMMA": 0     } },
+        { "model_name": "dqn@memory_type=subtree", "model_class": QNetwork, "kwargs": { "memory_type": 'subtree' } },
+        { "model_name": "dqn@memory_type=random",  "model_class": QNetwork, "kwargs": { "memory_type": 'random'  } },
     ]
     for config in configs:
         with capture() as stdout:

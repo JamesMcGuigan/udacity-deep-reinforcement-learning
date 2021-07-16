@@ -1,6 +1,7 @@
 # Project 1: Navigation with Deep Q Learning
 
-## [evaluate.py](src/evaluate.py)
+## Evaluation 
+[src/evaluate.py](src/evaluate.py)
 
 ```
 conda activate drlnd
@@ -10,7 +11,8 @@ conda activate drlnd
 This shows the basic agent-environment interaction loop using a pretrained model
 
 
-## [train.py](src/train.py)
+## Training
+[src/train.py](src/train.py)
 
 ```
 conda activate drlnd
@@ -24,9 +26,8 @@ Training simulates upto 5000 episodes with 1000 timesteps each.
   to experience training data, but training is delayed until after the episode has completed
 - The neural network is trained with a minibatch of 64 experiences every 4 timesteps
 
-## [src/model.py](src/model.py) + [src/dqn_agent.py](src/dqn_agent.py)
-
 ### DQN Agent 
+[src/dqn_agent.py](src/dqn_agent.py)
 
 - Uses epsilon-greedy action selection, which decays throughout the training from 1 ^ 0.995 for each episode
 - Optionally implements a Dueling DQN architecture
@@ -35,6 +36,8 @@ Training simulates upto 5000 episodes with 1000 timesteps each.
 
 
 ### Basic DQN Model Architecture
+
+[src/model.py](src/model.py)
 
 - This implements a simple 3-layer fully connected network, sufficient to implement all logical gates
 - Network size was originally chosen by guess with size 64x64x4 (roughly double the input size of 37)
@@ -45,7 +48,6 @@ Training simulates upto 5000 episodes with 1000 timesteps each.
   - 64x64 was a little oversized (better than undersized), but not unreasonable as a blind guess
   - triangular networks are more performant than square networks
 
-models/dqn@NxN.log
 ```
  8x8  - Environment almost in 1000 episodes! Average Score: 12.75 | Time: 882.1s
 16x8  - Environment solved in  472 episodes! Average Score: 13.04 | Time: 542.5s
@@ -57,13 +59,26 @@ models/dqn@NxN.log
 ```
 
 ### Dueling DQN Model Architecture
+[src/model.py](src/model.py)
 
 - This implements a fully connected network with two heads and a recombination function.
 - Network sizes guessed based on optimal values for Basic DQN Model Architecture (32x16 + 16x1 + 16x4)
 - Shared Feature segment is a 2-layer fully-connected network copied from the Basic DQN
 - Value and Advantage heads are also 2-layer fully-connected networks (with 16x16 square interface with Features)
 - Outputs: Value + (Advanage - mean(Advanage)) 
-  
+
+
+### Prioritized Experience Replay
+[src/SumTree.py](src/SumTree.py)
+
+An alternative to random sampling is to weight using the temporal-difference error. 
+
+In theory this should speed up training performance by prioritizing samples that differ most from expectations. 
+
+This was implemented using the SumTree library, with a wrapper to allow it to share the same interface as the
+existing ReplayBuffer. There is potentially a bug in this code, or an incorrect formula for the TD error.
+Training using this memory structure fails to converge.
+
 
 # Hyperparameters
 
