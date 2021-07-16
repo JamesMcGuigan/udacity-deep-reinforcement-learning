@@ -156,7 +156,7 @@ class DQNAgent:
         Q_targets      = rewards + (gamma * Q_targets_next * (1 - dones))
         Q_expected     = self.qnetwork_local(states).gather(1, actions)
 
-        td_error       = (Q_targets - Q_expected) ** 2
+        td_error       = torch.abs(Q_expected - Q_targets).detach().cpu()
         loss           = F.mse_loss(Q_expected, Q_targets)
         self.optimizer.zero_grad()
         loss.backward()
@@ -164,7 +164,7 @@ class DQNAgent:
 
         # ------------------- update target network ------------------- #
         self.soft_update(self.qnetwork_local, self.qnetwork_target, self.TAU)
-        return td_error.detach().cpu()
+        return td_error
 
 
     def soft_update(self, local_model, target_model, tau):
