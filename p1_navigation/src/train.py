@@ -8,7 +8,7 @@ from unityagents import UnityEnvironment
 from src.ReplayBuffer import Experience
 from src.dqn_agent import DQNAgent
 from src.libs.contextmanager import capture
-from src.model import QNetwork
+from src.model import QNetwork, DuelingQNetwork
 
 
 def train_dqn(
@@ -136,8 +136,8 @@ if __name__ == '__main__':
     state_size, action_size = DQNAgent.get_env_state_action_size(env)  #  state_size == 37, action_size == 4
 
     configs = [
-        # { "model_name": "dqn",           "model_class": QNetwork },
-        # { "model_name": "dueling_dqn",   "model_class": DuelingQNetwork }
+        { "model_name": "dqn",           "model_class": QNetwork },
+        { "model_name": "dueling_dqn",   "model_class": DuelingQNetwork },
 
         # { "model_name": "dqn@64x64",     "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 64 } },
         # { "model_name": "dqn@64x32",     "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 32 } },
@@ -164,8 +164,8 @@ if __name__ == '__main__':
         # { "model_name": "dqn@gamma=0.5",   "model_class": QNetwork, "kwargs": { "GAMMA": 0.5   } },
         # { "model_name": "dqn@gamma=0",     "model_class": QNetwork, "kwargs": { "GAMMA": 0     } },
 
-        { "model_name": "dqn@memory_type=subtree", "model_class": QNetwork, "kwargs": { "memory_type": 'subtree' } },
-        { "model_name": "dqn@memory_type=random",  "model_class": QNetwork, "kwargs": { "memory_type": 'random'  } },
+        # { "model_name": "dqn@memory_type=subtree", "model_class": QNetwork, "kwargs": { "memory_type": 'subtree' } },
+        # { "model_name": "dqn@memory_type=random",  "model_class": QNetwork, "kwargs": { "memory_type": 'random'  } },
     ]
     for config in configs:
         with capture() as stdout:
