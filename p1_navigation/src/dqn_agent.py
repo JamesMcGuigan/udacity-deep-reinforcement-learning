@@ -1,29 +1,35 @@
 import os
 import random
-from collections import namedtuple, deque
 from typing import Tuple
 
 import numpy as np
 import torch
-import torch.optim as optim
 import torch.nn.functional as F
+import torch.optim as optim
 
 from src.ReplayBuffer import ReplayBuffer
 from src.model import QNetwork
 
-BUFFER_SIZE = int(1e5)  # replay buffer size
-BATCH_SIZE = 64         # minibatch size
-GAMMA = 0.99            # discount factor
-TAU = 1e-3              # for soft update of target parameters
-LR = 5e-4               # learning rate
-UPDATE_EVERY = 4        # how often to update the network
-
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-class DQNAgent():
+class DQNAgent:
     """Interacts with and learns from the environment."""
 
-    def __init__(self, state_size, action_size, model_class=QNetwork, update_type='dqn', seed=42):
+    def __init__(
+            self,
+            state_size,
+            action_size,
+            model_class=QNetwork,
+            update_type='dqn',
+            seed=42,
+            BUFFER_SIZE = int(1e5),  # replay buffer size
+            BATCH_SIZE = 64,         # minibatch size
+            GAMMA = 0.99,            # discount factor
+            TAU = 1e-3,              # for soft update of target parameters
+            LR = 5e-4,               # learning rate
+            UPDATE_EVERY = 4,         # how often to update the network
+            **kwargs
+    ):
         """Initialize an Agent object.
 
         Params
@@ -32,6 +38,13 @@ class DQNAgent():
             action_size (int): dimension of each action
             seed (int): random seed
         """
+        self.BATCH_SIZE   = BATCH_SIZE
+        self.BUFFER_SIZE  = BUFFER_SIZE
+        self.GAMMA        = GAMMA
+        self.TAU          = TAU
+        self.LR           = LR
+        self.UPDATE_EVERY = UPDATE_EVERY
+
         random.seed(seed)
 
         self.state_size  = state_size
@@ -39,8 +52,8 @@ class DQNAgent():
         self.update_type = update_type
 
         # Q-Network
-        self.qnetwork_local  = model_class(state_size, action_size, seed).to(device)
-        self.qnetwork_target = model_class(state_size, action_size, seed).to(device)
+        self.qnetwork_local  = model_class(state_size, action_size, seed, **kwargs).to(device)
+        self.qnetwork_target = model_class(state_size, action_size, seed, **kwargs).to(device)
         self.optimizer       = optim.Adam(self.qnetwork_local.parameters(), lr=LR)
 
         # try:                   qnetwork_parameters = self.qnetwork_local.parameters()
@@ -94,12 +107,12 @@ class DQNAgent():
         self.memory.add(state, action, reward, next_state, done)
 
         # Learn every UPDATE_EVERY time steps.
-        self.t_step = (self.t_step + 1) % UPDATE_EVERY
+        self.t_step = (self.t_step + 1) % self.UPDATE_EVERY
         if self.t_step == 0:
             # If enough samples are available in memory, get random subset and learn
-            if len(self.memory) > BATCH_SIZE:
+            if len(self.memory) > self.BATCH_SIZE:
                 experiences = self.memory.sample()
-                self.learn(experiences, GAMMA)
+                self.learn(experiences, self.GAMMA)
 
 
     def act(self, state, eps=0.):
@@ -143,7 +156,7 @@ class DQNAgent():
         self.optimizer.step()
 
         # ------------------- update target network ------------------- #
-        self.soft_update(self.qnetwork_local, self.qnetwork_target, TAU)
+        self.soft_update(self.qnetwork_local, self.qnetwork_target, self.TAU)
 
 
     def soft_update(self, local_model, target_model, tau):

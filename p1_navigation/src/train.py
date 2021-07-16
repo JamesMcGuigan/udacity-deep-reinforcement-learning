@@ -107,7 +107,7 @@ def train_dqn(
             scores_window.append(score)       # save most recent score
             scores.append(score)              # save most recent score
             eps = max(eps_end, eps_decay*eps) # decrease epsilon
-            print('\rEpisode {:4d}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
+            # print('\rEpisode {:4d}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
 
             if i_episode % 100 == 0:
                 print('\rEpisode {:4d}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)))
@@ -131,8 +131,16 @@ if __name__ == '__main__':
     state_size, action_size = DQNAgent.get_env_state_action_size(env)  #  state_size == 37, action_size == 4
 
     configs = [
-        { "model_name": "dqn",         "model_class": QNetwork },
-        { "model_name": "dueling_dqn", "model_class": DuelingQNetwork }
+        # { "model_name": "dqn@64x64",  "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 64 } },
+        # { "model_name": "dqn@64x32",  "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 32 } },
+        # { "model_name": "dqn@32x32",  "model_class": QNetwork,  "kwargs": { "fc1_units": 32, "fc2_units": 32 } },
+        # { "model_name": "dqn@32x16",  "model_class": QNetwork,  "kwargs": { "fc1_units": 32, "fc2_units": 16 } },
+        # { "model_name": "dqn@16x16",  "model_class": QNetwork,  "kwargs": { "fc1_units": 16, "fc2_units": 16 } },
+        # { "model_name": "dqn@16x8",   "model_class": QNetwork,  "kwargs": { "fc1_units": 16, "fc2_units":  8 } },
+        # { "model_name": "dqn@8x8",    "model_class": QNetwork,  "kwargs": { "fc1_units":  8, "fc2_units":  8 } },
+
+        # { "model_name": "dqn",         "model_class": QNetwork },
+        # { "model_name": "dueling_dqn", "model_class": DuelingQNetwork }
     ]
     for config in configs:
         time_start = time.perf_counter()
@@ -140,13 +148,13 @@ if __name__ == '__main__':
             print(f'\nconfig: {config}')
             scores = []
             model_name = config['model_name']
-            agent      = DQNAgent(state_size, action_size, model_class=config['model_class'])
+            agent      = DQNAgent(state_size, action_size, model_class=config['model_class'], **config.get('kwargs',{}))
             # agent.load(f'models/{model_name}.pth')
             scores    += train_dqn(
                 env,
                 agent,
                 max_t=1000,
-                n_episodes=5000,
+                n_episodes=1000,
                 filename=f'models/{model_name}.pth'
             )
             # agent.save(f'models/{model_name}.pth')
