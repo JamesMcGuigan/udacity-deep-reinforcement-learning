@@ -68,12 +68,52 @@ models/dqn@NxN.log
 # Hyperparameters
 
 In order of presumed importance:
-- LR = 5e-4               # learning rate
+- LR = 1e-3               # optimized learning rate
 - GAMMA = 0.99            # discount factor
 - TAU = 1e-3              # for soft update of target parameters
-- BUFFER_SIZE = int(1e5)  # replay buffer size
+- BUFFER_SIZE = int(1e5)  # 88 Mb memory + 100 previous games  
 - BATCH_SIZE = 64         # sensible default
+- UPDATE_EVERY = 4        # sensible default
 
+
+## Learning Rate
+
+LR Learning Rate is often the most important hyperparameter. 
+- 1e-2 is too large and prevents the model from converging to optimum score
+- 1e-3 seems to be the optimal LR value
+- 1e-4 and 1e-5 are too small and increases training time by double or more
+
+```
+lr=1e-2 Environment unsolved after 1000 episodes!  Average Score:  8.57 | Time 934s
+lr=1e-3 Environment solved in 457 episodes!        Average Score: 13.02 | Time 536s
+lr=1e-4 Environment solved in 674 episodes!        Average Score: 13.04 | Time 781s
+lr=1e-5 Environment unsolved after 1000 episodes!  Average Score: 11.80 | Time 962s 
+```
+
+## Gamma
+
+## Tau
+
+## Buffer Size
+
+Each Experience tuple requires 88 bytes. Each trajectory is 1000 time steps. 
+
+BUFFER_SIZE = 1e5 = 100,000 * 88 bytes = 88 Megabytes of memory
+BUFFER_SIZE = 1e5 = 100,000 / 1000     = 100 previous games
+
+Thus 1e5 seems like a sensible guess for this value.
+
+
+## Batch Size
+
+64 is a sensible default for that will be left unoptimized.
+
+This is small enough to fit into GPU memory, and large enough to make use of GPU parallelism, 
+without sitting at the extreems of 1 = Stochastic Gradient Descent and N = Full-Batch Gradient Descent.
+
+BATCH_SIZE=64 also interacts with UPDATE_EVERY=4 + BUFFER_SIZE=100_000. On average, 64 / 4 = 16
+datapoints will be trained for every new datapoint added to the memory buffer. Once the buffer is full this means
+each datapoint will be reused on average 16 times, the probability of which is independent of the buffer size.
 
 
 # Plot of Rewards

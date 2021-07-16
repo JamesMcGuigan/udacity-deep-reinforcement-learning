@@ -34,6 +34,7 @@ def train_dqn(
         eps_end (float): minimum value of epsilon
         eps_decay (float): multiplicative factor (per episode) for decreasing epsilon
     """
+    time_start = time.perf_counter()
     scores = []                        # list containing scores from each episode
     try:
         print('train_dqn(', {
@@ -112,11 +113,15 @@ def train_dqn(
             if i_episode % 100 == 0:
                 print('\rEpisode {:4d}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)))
 
+            time_taken = time.perf_counter() - time_start
             if np.mean(scores_window) >= win_score:
-                print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'
-                      .format(i_episode-100, np.mean(scores_window)))
+                print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f} | Time: {:.0f}s'
+                      .format(i_episode-100, np.mean(scores_window), time_taken))
                 agent.save(filename)
                 break
+        else:
+            print('\nEnvironment unsolved after {:d} episodes!\tAverage Score: {:.2f} | Time: {:.0f}s'
+                  .format(i_episode, np.mean(scores_window), time_taken))
 
     except KeyboardInterrupt as exception:
         # agent.save(filename)
@@ -131,19 +136,35 @@ if __name__ == '__main__':
     state_size, action_size = DQNAgent.get_env_state_action_size(env)  #  state_size == 37, action_size == 4
 
     configs = [
-        # { "model_name": "dqn@64x64",  "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 64 } },
-        # { "model_name": "dqn@64x32",  "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 32 } },
-        # { "model_name": "dqn@32x32",  "model_class": QNetwork,  "kwargs": { "fc1_units": 32, "fc2_units": 32 } },
-        # { "model_name": "dqn@32x16",  "model_class": QNetwork,  "kwargs": { "fc1_units": 32, "fc2_units": 16 } },
-        # { "model_name": "dqn@16x16",  "model_class": QNetwork,  "kwargs": { "fc1_units": 16, "fc2_units": 16 } },
-        # { "model_name": "dqn@16x8",   "model_class": QNetwork,  "kwargs": { "fc1_units": 16, "fc2_units":  8 } },
-        # { "model_name": "dqn@8x8",    "model_class": QNetwork,  "kwargs": { "fc1_units":  8, "fc2_units":  8 } },
+        # { "model_name": "dqn",           "model_class": QNetwork },
+        # { "model_name": "dueling_dqn",   "model_class": DuelingQNetwork }
 
-        # { "model_name": "dqn",         "model_class": QNetwork },
-        # { "model_name": "dueling_dqn", "model_class": DuelingQNetwork }
+        # { "model_name": "dqn@64x64",     "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 64 } },
+        # { "model_name": "dqn@64x32",     "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 32 } },
+        # { "model_name": "dqn@32x32",     "model_class": QNetwork,  "kwargs": { "fc1_units": 32, "fc2_units": 32 } },
+        # { "model_name": "dqn@32x16",     "model_class": QNetwork,  "kwargs": { "fc1_units": 32, "fc2_units": 16 } },
+        # { "model_name": "dqn@16x16",     "model_class": QNetwork,  "kwargs": { "fc1_units": 16, "fc2_units": 16 } },
+        # { "model_name": "dqn@16x8",      "model_class": QNetwork,  "kwargs": { "fc1_units": 16, "fc2_units":  8 } },
+        # { "model_name": "dqn@8x8",       "model_class": QNetwork,  "kwargs": { "fc1_units":  8, "fc2_units":  8 } },
+
+        # { "model_name": "dqn@lr=1e-2",   "model_class": QNetwork, "kwargs": { "LR": 1e-2 } },
+        # { "model_name": "dqn@lr=1e-3",   "model_class": QNetwork, "kwargs": { "LR": 1e-3 } },
+        # { "model_name": "dqn@lr=1e-4",   "model_class": QNetwork, "kwargs": { "LR": 1e-4 } },
+        # { "model_name": "dqn@lr=1e-5",   "model_class": QNetwork, "kwargs": { "LR": 1e-5 } },
+
+        { "model_name": "dqn@tau=1e-1",    "model_class": QNetwork, "kwargs": { "TAU": 1e-1 } },
+        { "model_name": "dqn@tau=1e-2",    "model_class": QNetwork, "kwargs": { "TAU": 1e-2 } },
+        { "model_name": "dqn@tau=1e-3",    "model_class": QNetwork, "kwargs": { "TAU": 1e-3 } },
+        { "model_name": "dqn@tau=1e-4",    "model_class": QNetwork, "kwargs": { "TAU": 1e-4 } },
+        { "model_name": "dqn@tau=1e-5",    "model_class": QNetwork, "kwargs": { "TAU": 1e-5 } },
+
+        { "model_name": "dqn@gamma=1",     "model_class": QNetwork, "kwargs": { "GAMMA": 1     } },
+        { "model_name": "dqn@gamma=0.99",  "model_class": QNetwork, "kwargs": { "GAMMA": 0.99  } },
+        { "model_name": "dqn@gamma=0.9",   "model_class": QNetwork, "kwargs": { "GAMMA": 0.9   } },
+        { "model_name": "dqn@gamma=0.5",   "model_class": QNetwork, "kwargs": { "GAMMA": 0.5   } },
+        { "model_name": "dqn@gamma=0",     "model_class": QNetwork, "kwargs": { "GAMMA": 0     } },
     ]
     for config in configs:
-        time_start = time.perf_counter()
         with capture() as stdout:
             print(f'\nconfig: {config}')
             scores = []
@@ -158,8 +179,6 @@ if __name__ == '__main__':
                 filename=f'models/{model_name}.pth'
             )
             # agent.save(f'models/{model_name}.pth')
-            time_taken = time.perf_counter() - time_start
-            print(f'Time: {time_taken:.1f}s')
 
         print("\n".join(stdout))
         with open(f'models/{model_name}.log', 'w') as f:

@@ -22,11 +22,11 @@ class DQNAgent:
             model_class=QNetwork,
             update_type='dqn',
             seed=42,
-            BUFFER_SIZE = int(1e5),  # replay buffer size
-            BATCH_SIZE = 64,         # minibatch size
-            GAMMA = 0.99,            # discount factor
-            TAU = 1e-3,              # for soft update of target parameters
-            LR = 5e-4,               # learning rate
+            LR           = 1e-3,      # 1e-3 has optimal training times
+            GAMMA        = 0.99,      # discount factor
+            TAU          = 1e-3,      # for soft update of target parameters
+            BUFFER_SIZE  = int(1e5),  # 88Mb memory + last 100 games @ 1000 timesteps per game
+            BATCH_SIZE   = 64,        # minibatch size - sensible default
             UPDATE_EVERY = 4,         # how often to update the network
             **kwargs
     ):
