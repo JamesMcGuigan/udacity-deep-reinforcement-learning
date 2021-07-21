@@ -6,21 +6,22 @@ import os
 from unityagents import UnityEnvironment
 
 from libs.env import get_env_state_action_agents_size
-from src.agents.RandomAgent import RandomAgent
+from src.agents.ActorCriticMontyCarloAgent import ActorCriticMontyCarloAgent
 from src.libs.contextmanager import capture
 
 if __name__ == '__main__':
     os.chdir(os.path.join(os.path.dirname(__file__), '..'))  # ensure cwd in project root
-    env = UnityEnvironment(file_name='./Reacher_Linux_NoVis/Reacher.x86_64')
-    # env = UnityEnvironment(file_name='./Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86_64')
+    # env = UnityEnvironment(file_name='./Reacher_Linux_NoVis/Reacher.x86_64')
+    env = UnityEnvironment(file_name='./Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86_64')
     # env = UnityEnvironment(file_name='./Crawler_Linux_NoVis/Crawler.x86_64')
     state_size, action_size, num_agents = get_env_state_action_agents_size(env)  # == (33, 4, 20)
 
     configs = [
-        { "model_name": "", "agent_class": RandomAgent, "params": {} },
+        # { "model_name": "", "agent_class": RandomAgent, "params": {} },
+        { "model_name": "", "agent_class": ActorCriticMontyCarloAgent, "params": {}},
     ]
     for config in configs:
-        with capture() as stdout:
+        with capture(False) as stdout:
             print(f'\nconfig: {config}')
             rewards = []
 

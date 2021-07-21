@@ -19,9 +19,15 @@ class Agent(object):
         self.state_size  = state_size
         self.num_agents  = num_agents
         self.params      = params
-        self.actor       = self.get_actor_network()
-        self.critic      = self.get_critic_network()
+        # self.actor       = self.get_actor_network()
+        # self.critic      = self.get_critic_network()
         self.obs_attr    = 'vector_observations'
+        self._next_idx   = 0
+
+
+    def next_idx(self):
+        self._next_idx += 1
+        return self._next_idx
 
 
     def act(self, state, eps) -> int:
@@ -30,22 +36,22 @@ class Agent(object):
 
     def step_experience(self, experience: Experience):
         """ Agents may choose to define either step_experience() or step_trajectory() """
-        (state, action, reward, next_state, done) = experience
+        (state, action, reward, next_state, done, idx) = experience
         pass
 
 
-    def step_trajectory(self, trajectory: Trajectory):
+    def step_trajectory(self, trajectory: Trajectory, eps=1.0):
         """ Agents may choose to define either step_experience() or step_trajectory() """
         for experience in trajectory:
             self.step_experience(experience)
 
 
-    def get_actor_network(self):
-        return None
-
-
-    def get_critic_network(self):
-        return None
+    # def get_actor_network(self):
+    #     return None
+    #
+    #
+    # def get_critic_network(self):
+    #     return None
 
 
     @property
@@ -83,7 +89,7 @@ class Agent(object):
 
     def train(self,
               env,
-              n_episodes=200,
+              n_episodes=2000,
               max_t=100,
               eps_start=1.0,
               eps_end=0.01,
@@ -116,6 +122,9 @@ class Agent(object):
                 scores_window.append(score)       # save most recent score
                 scores.append(score)              # save most recent score
                 eps = max(eps_end, eps_decay*eps) # decrease epsilon
+
+                agent.step_trajectory(trajectory, eps)
+
                 # print('\rEpisode {:4d}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
 
                 if i_episode % 100 == 0:
@@ -152,7 +161,7 @@ class Agent(object):
             reward     = env_info.rewards[0]                # get the reward
             done       = env_info.local_done[0]             # see if episode has finished
 
-            experience = Experience(state, action, reward, next_state, done)
+            experience = Experience(state, action, reward, next_state, done, self.next_idx())
             trajectory.append( experience )
 
             state = next_state                         # roll over the state to next time step
