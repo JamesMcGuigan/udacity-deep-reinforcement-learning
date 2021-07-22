@@ -19,3 +19,8 @@
 | SAC | Soft Actor-Critic | Off-policy | Continuous | Continuous | Advantage |
 
 - https://en.wikipedia.org/wiki/Reinforcement_learning#Comparison_of_reinforcement_learning_algorithms
+
+
+
+RL Paper Reading 20-Summary of MF Algorithms (VPG, TROP, PPO, DDPG, TD3, SAC)
+- https://www.programmersought.com/article/96325908734/
