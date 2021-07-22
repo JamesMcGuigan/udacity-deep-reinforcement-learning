@@ -30,7 +30,7 @@ class Agent(object):
         return self._next_idx
 
 
-    def act(self, state, eps) -> int:
+    def act(self, state, eps=0) -> int:
         pass
 
 

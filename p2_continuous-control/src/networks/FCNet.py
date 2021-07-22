@@ -9,7 +9,7 @@ class FCNet(nn.Module):
     """
     This represents a simple fully connected network
     """
-    def __init__(self, shape=(32,16,8), seed=42):
+    def __init__(self, shape=(32,16,8), gate=torch.tanh, seed=42):
         """Initialize parameters and build model.
         Params
         ======
@@ -20,12 +20,13 @@ class FCNet(nn.Module):
             fc2_units (int): Number of nodes in second hidden layer
         """
         super().__init__()
-        self.seed    = torch.manual_seed(seed)
+        self.seed = torch.manual_seed(seed)
         # print([ (size1, size2) for size1, size2 in zip(shape[:-1], shape[1:]) ])
         self.linears = nn.ModuleList([
             nn.Linear(size1, size2)
             for size1, size2 in zip(shape[:-1], shape[1:])
         ])
+        self.gate = gate
 
 
     def forward(self, state):
@@ -36,5 +37,5 @@ class FCNet(nn.Module):
             x = self.linears[n](x)
             if n != len(self.linears)-1:
                 x = F.relu(x)
-        x = torch.tanh(x)
+        x = self.gate(x)
         return x

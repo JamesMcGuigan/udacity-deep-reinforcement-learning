@@ -14,7 +14,7 @@ class RandomAgent(Agent):
 
     # Nothing to train here
     def step(self, experience: Experience):
-        (state, action, reward, next_state, done) = experience
+        (state, action, reward, next_state, done, idx) = experience
         pass
 
     # Nothing to save here

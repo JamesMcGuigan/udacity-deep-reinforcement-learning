@@ -7,6 +7,7 @@ from unityagents import UnityEnvironment
 
 from libs.env import get_env_state_action_agents_size
 from src.agents.ActorCriticMontyCarloAgent import ActorCriticMontyCarloAgent
+from src.agents.AgentA2C import AgentA2C
 from src.libs.contextmanager import capture
 
 if __name__ == '__main__':
@@ -18,10 +19,11 @@ if __name__ == '__main__':
 
     configs = [
         # { "model_name": "", "agent_class": RandomAgent, "params": {} },
-        { "model_name": "", "agent_class": ActorCriticMontyCarloAgent, "params": {}},
+        # { "model_name": "", "agent_class": ActorCriticMontyCarloAgent, "params": {}},  # Fails to converge
+        { "model_name": "", "agent_class": AgentA2C, "params": {}},                      # Fails to converge
     ]
     for config in configs:
-        with capture(False) as stdout:
+        with capture() as stdout:
             print(f'\nconfig: {config}')
             rewards = []
 
