@@ -29,12 +29,12 @@ apt-get install lib32stdc++6
 These github versions of Unity Environment seem to work better. Unsure of original source:
 ```
 git clone https://github.com/ainvyu/p2-continuous-control.git
-cp -r p2-continuous-control/Reacher_Linux_NoVis/      ./
-cp -r p2-continuous-control/Reacher_One_Linux_NoVis/  ./
+cp -r p2-continuous-control/unity/Reacher_Linux_NoVis/      ./
+cp -r p2-continuous-control/unity/Reacher_One_Linux_NoVis/  ./
 rm -rvf p2-continuous-control
 
 git clone https://github.com/chihoxtra/continuous_actions_rl/
-cp -r continuous_actions_rl/Crawler_Linux_NoVis/ ./
+cp -r continuous_actions_rl/unity/Crawler_Linux_NoVis/ ./
 rm -rvf continuous_actions_rl
 ```
 

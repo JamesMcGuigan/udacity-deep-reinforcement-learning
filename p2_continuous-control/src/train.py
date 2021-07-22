@@ -12,9 +12,9 @@ from src.libs.contextmanager import capture
 
 if __name__ == '__main__':
     os.chdir(os.path.join(os.path.dirname(__file__), '..'))  # ensure cwd in project root
-    # env = UnityEnvironment(file_name='./Reacher_Linux_NoVis/Reacher.x86_64')
-    env = UnityEnvironment(file_name='./Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86_64')
-    # env = UnityEnvironment(file_name='./Crawler_Linux_NoVis/Crawler.x86_64')
+    # env = UnityEnvironment(file_name='./unity/Reacher_Linux_NoVis/Reacher.x86_64')
+    env = UnityEnvironment(file_name='./unity/Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86_64')
+    # env = UnityEnvironment(file_name='./unity/Crawler_Linux_NoVis/Crawler.x86_64')
     state_size, action_size, num_agents = get_env_state_action_agents_size(env)  # == (33, 4, 20)
 
     configs = [
