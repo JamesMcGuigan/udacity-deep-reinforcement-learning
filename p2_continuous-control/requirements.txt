@@ -1,5 +1,10 @@
+# apt-get install ffmpeg freeglut3-dev xvfb  # For visualization
+
+pip-tools
 unityagents
 mlagents
 gym
 h5py
 Pillow
+stable-baselines3
+stable-baselines3[extra]

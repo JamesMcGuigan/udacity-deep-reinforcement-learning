@@ -7,7 +7,6 @@ See Also:
 
 
 ## Random Agent
-
 ```
 $ python3 src/test_random_bot.py
 ```
@@ -18,3 +17,46 @@ It typically returns a score of zero, but occasionally scores as high as 0.9.
 Performance is random and doesn't improve over time.
 
 ![](./models/RandomAgent.png)
+
+
+## Actor Critic
+```
+$ python3 src/train.py
+```
+
+An attempt was made to handcode implementations of the Actor Critic algorithm.
+
+This code was able to successfully loop, but training failed to converge and this 
+achieved similar performance to the RandomBot.
+
+- [src/agents/ActorCriticMontyCarloAgent.py](src/agents/ActorCriticMontyCarloAgent.py)
+- [src/agents/AgentA2C.py](src/agents/AgentA2C.py)
+
+
+## Stable Baselines
+```
+$ python3 stable_baselines/example_unity.py
+```
+
+An alternative to writing (potentially buggy) implementations of the algorithms is to use 
+a library implementation. Stable Baselines was chosen as a framework and a wrapper class was
+written to enable a Unity environment to emulate the OpenAI Gym interface.
+
+Strangely, this code was able to successfully loop, but training failed to converge and this
+achieved similar performance to both RandomBot and hand-coded Actor Critic implementations.
+
+
+## DQN Policy Agent
+```
+$ python3 dqn/train.py
+```
+
+An attempt was made to port the DQN code from the Banana game with a discrete action spaces 
+and map it to using a bucketed policy distribution, with the range [-1,+1] 
+represented as a size 20 vector allowing for 0.1 granularity in motor control.
+
+There is yet to be solved bug in the pytorch implementation, with the new data structures
+resulting in a RuntimeError that `loss.backward()` does not have a grad_fn()
+
+- [dqn/dqn_agent.py](dqn/dqn_agent.py)
+- [dqn/model.py](dqn/model.py)
