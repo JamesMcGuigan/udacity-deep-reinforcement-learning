@@ -1,4 +1,5 @@
 *.zip
+./p2_continuous-control/github/
 
 # Mac OS
 .DS_Store

@@ -36,6 +36,8 @@ rm -rvf p2-continuous-control
 git clone https://github.com/chihoxtra/continuous_actions_rl/
 cp -r continuous_actions_rl/unity/Crawler_Linux_NoVis/ ./
 rm -rvf continuous_actions_rl
+
+git subtree add --prefix p2_continuous-control/DeepRL https://github.com/ShangtongZhang/DeepRL master --squash
 ```
 
 Then install drlnd conda environment and python dependencies
