@@ -1,6 +1,6 @@
 from unityagents import UnityEnvironment
 
-from src.dqn.dqn_agent import DQNPolicyAgent
+from dqn.dqn_agent import DQNPolicyAgent
 
 
 def evaluate_agent(env, agent):

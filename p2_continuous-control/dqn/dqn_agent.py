@@ -6,9 +6,9 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-from src.dqn.ReplayBuffer import ReplayBuffer
-from src.dqn.SumTree import SumTreeReplayBuffer
-from src.dqn.model import QPolicyNetwork
+from dqn.ReplayBuffer import ReplayBuffer
+from dqn.SumTree import SumTreeReplayBuffer
+from dqn.model import QPolicyNetwork
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 

@@ -5,9 +5,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 from unityagents import UnityEnvironment
 
-from src.dqn.ReplayBuffer import Experience
-from src.dqn.dqn_agent import DQNPolicyAgent
-from src.dqn.model import QNetwork, DuelingQNetwork, QPolicyNetwork
+from dqn.ReplayBuffer import Experience
+from dqn.dqn_agent import DQNPolicyAgent
+from dqn.model import QPolicyNetwork
 from src.libs.contextmanager import capture
 
 
