@@ -10,9 +10,9 @@ import torch
 import torch.nn.functional as F
 from torch import nn, tensor, is_tensor, optim
 
-from src.agents.Agent import Agent
-from src.libs.Trajectory import Trajectory
-from src.libs.device import device
+from src.v1_handcoded.agents.Agent import Agent
+from src.v1_handcoded.libs.Trajectory import Trajectory
+from src.v1_handcoded.libs.device import device
 
 
 class ModelA2C(nn.Module):
@@ -22,16 +22,20 @@ class ModelA2C(nn.Module):
         self.base = nn.Sequential(
             nn.Linear(state_size, hidden_size),
             nn.ReLU(),
-        )
+        ).to(device)
+
         self.mu = nn.Sequential(
             nn.Linear(hidden_size, action_size),
             nn.Tanh(),
-        )
+        ).to(device)
+
         self.var = nn.Sequential(
             nn.Linear(hidden_size, action_size),
             nn.Softplus(),
-        )
-        self.value = nn.Linear(hidden_size, 1)
+        ).to(device)
+
+        self.value = nn.Linear(hidden_size, 1).to(device)
+
 
     def forward(self, x):
         x        = (x if torch.is_tensor(x) else tensor(x)).float().to(device)
@@ -51,7 +55,7 @@ class AgentA2C(Agent):
             ENTROPY_BETA = 1e-4,
     ):
         super().__init__(state_size, action_size, num_agents, params)
-        self.network   = ModelA2C(state_size, action_size)  # TODO: implement num_agents
+        self.network   = ModelA2C(state_size, action_size).to(device)  # TODO: implement num_agents
         self.LR        = LR
         self.ENTROPY_BETA = ENTROPY_BETA
 
@@ -86,10 +90,12 @@ class AgentA2C(Agent):
         losses = torch.zeros((len(trajectory), self.action_size))
         for n, experience in enumerate(trajectory.with_future_rewards(eps)):
             (state, action, reward, next_state, done, idx) = experience
-            reward = tensor(reward)
+            action = tensor(action).to(device)
+            reward = tensor(reward).to(device)
 
             mu_v, var_v, value_v = self.network(state)
-            loss_value_v   = F.mse_loss(value_v.squeeze(-1), reward)
+            # loss_value_v   = F.mse_loss(value_v.squeeze(-1), reward)
+            loss_value_v   = F.mse_loss(value_v, reward)
             adv_v          = reward.unsqueeze(dim=-1) - value_v.detach()
             log_prob_v     = adv_v * self.calc_logprob(mu_v, var_v, action)
             loss_policy_v  = -log_prob_v.mean()

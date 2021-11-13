@@ -6,7 +6,7 @@ import os
 
 
 os.chdir(os.path.dirname(__file__))
-env = UnityEnvironment(file_name='../unity/Reacher_Linux_NoVis/Reacher.x86_64')
+env = UnityEnvironment(file_name='../../unity/Reacher_Linux_NoVis/Reacher.x86_64')
 # env = UnityEnvironment(file_name='./unity/Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86_64')
 # env = UnityEnvironment(file_name='./unity/Crawler_Linux_NoVis/Crawler.x86_64')
 

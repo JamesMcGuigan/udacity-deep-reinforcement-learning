@@ -8,7 +8,7 @@ See Also:
 
 ## Random Agent
 ```
-$ python3 src/test_random_bot.py
+$ python3 src/v1_handcoded/test_random_bot.py
 ```
 
 This is a baseline agent mostly for the purposes of testing the training loop code.
@@ -16,12 +16,12 @@ This is a baseline agent mostly for the purposes of testing the training loop co
 It typically returns a score of zero, but occasionally scores as high as 0.9. 
 Performance is random and doesn't improve over time.
 
-![](./models/RandomAgent.png)
+![](models/RandomAgent.png)
 
 
 ## Actor Critic
 ```
-$ python3 src/train.py
+$ python3 src/v1_handcoded/train.py
 ```
 
 An attempt was made to handcode implementations of the Actor Critic algorithm.
@@ -29,13 +29,13 @@ An attempt was made to handcode implementations of the Actor Critic algorithm.
 This code was able to successfully loop, but training failed to converge and this 
 achieved similar performance to the RandomBot.
 
-- [src/agents/ActorCriticMontyCarloAgent.py](src/agents/ActorCriticMontyCarloAgent.py)
-- [src/agents/AgentA2C.py](src/agents/AgentA2C.py)
+- [src/v1_handcoded/agents/ActorCriticMontyCarloAgent.py](src/v1_handcoded/agents/ActorCriticMontyCarloAgent.py)
+- [src/v1_handcoded/agents/AgentA2C.py](src/v1_handcoded/agents/AgentA2C.py)
 
 
 ## Stable Baselines
 ```
-$ python3 stable_baselines/example_unity.py
+$ python3 src/v3_stable_baselines/example_unity.py
 ```
 
 An alternative to writing (potentially buggy) implementations of the algorithms is to use 
@@ -48,7 +48,7 @@ achieved similar performance to both RandomBot and hand-coded Actor Critic imple
 
 ## DQN Policy Agent
 ```
-$ python3 dqn/train.py
+$ python3 src/v2_dqn/train.py
 ```
 
 An attempt was made to port the DQN code from the Banana game with a discrete action spaces 
@@ -58,5 +58,5 @@ represented as a size 20 vector allowing for 0.1 granularity in motor control.
 There is yet to be solved bug in the pytorch implementation, with the new data structures
 resulting in a RuntimeError that `loss.backward()` does not have a grad_fn()
 
-- [dqn/dqn_agent.py](dqn/dqn_agent.py)
-- [dqn/model.py](dqn/model.py)
+- [dqn/v2_dqn/dqn_agent.py](src/v2_dqn/dqn_agent.py)
+- [dqn/v2_dqn/model.py](src/v2_dqn/model.py)

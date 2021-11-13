@@ -8,7 +8,7 @@ import numpy as np
 import torch
 from matplotlib import pyplot as plt
 
-from src.libs.Trajectory import Experience, Trajectory
+from src.v1_handcoded.libs.Trajectory import Experience, Trajectory
 
 
 class Agent(object):
@@ -63,7 +63,7 @@ class Agent(object):
     def filename(self, name='', field='', ext='pth'):
         filename = f'./models/{self.__class__.__name__}.{name}.{field}.{ext}'
         filename = re.sub(r'(\w+)\.+\1', r'\1', filename)   # remove duplicate words
-        filename = re.sub(r'\.+',        r'.', filename)             # remove duplicate dots
+        filename = re.sub(r'\.+', r'', filename)             # remove duplicate dots
         return filename
 
 

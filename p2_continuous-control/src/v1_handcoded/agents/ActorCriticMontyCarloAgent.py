@@ -3,10 +3,10 @@ from typing import List
 import torch
 from torch import optim, tensor
 
-from src.agents.Agent import Agent
-from src.libs.Trajectory import Trajectory
-from src.libs.device import device
-from src.networks.FCNet import FCNet
+from src.v1_handcoded.agents.Agent import Agent
+from src.v1_handcoded.libs.Trajectory import Trajectory
+from src.v1_handcoded.libs.device import device
+from src.v1_handcoded.networks.FCNet import FCNet
 import torch.nn.functional as F
 
 

@@ -1,22 +1,20 @@
 # Source: https://stable-baselines3.readthedocs.io/en/master/modules/a2c.html
 import os
-from collections import deque
 
 import gym
 import numpy as np
 from gym.vector.utils import spaces
 
 from stable_baselines3 import A2C, PPO
-from stable_baselines3.common.env_util import make_vec_env
 from unityagents import UnityEnvironment
 
 
 # Parallel environments
 # env = make_vec_env("CartPole-v1", n_envs=4)
-from src.libs.env import get_env_state_action_agents_size
+from src.v1_handcoded.libs.env import get_env_state_action_agents_size
 
 
-class ReacherOneUnityEnv(gym.Env):
+class UnityGymEnv(gym.Env):
     """
     Custom Environment that follows gym interface.
     This is a simple env where the agent must learn to go always left.
@@ -24,10 +22,10 @@ class ReacherOneUnityEnv(gym.Env):
     # Because of google colab, we cannot implement the GUI ('human' render mode)
     metadata = {'render.modes': ['console']}
 
-    def __init__(self, grid_size=10):
+    def __init__(self, file_name='./unity/Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86', grid_size=10):
         super().__init__()
-        os.chdir(os.path.dirname(__file__))
-        self.env = UnityEnvironment(file_name='../unity/Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86')
+        # os.chdir(os.path.dirname(__file__))
+        self.env = UnityEnvironment(file_name=file_name)
         state_size, action_size, num_agents = get_env_state_action_agents_size(self.env)
         self.scores_window = []
 
@@ -82,19 +80,3 @@ class ReacherOneUnityEnv(gym.Env):
 
     def close(self):
         return self.env.close()
-
-
-env   = ReacherOneUnityEnv()
-# model = A2C("MlpPolicy", env, verbose=1)
-model = PPO("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=25000)
-model.save("ReacherOneUnity")
-
-del model # remove to demonstrate saving and loading
-model = A2C.load("ReacherOneUnity")
-
-obs = env.reset()
-while True:
-    action, _states = model.predict(obs)
-    obs, rewards, dones, info = env.step(action)
-    env.render()

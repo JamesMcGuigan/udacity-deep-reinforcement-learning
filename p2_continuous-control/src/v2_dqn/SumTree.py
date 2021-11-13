@@ -8,7 +8,7 @@ import numpy
 # a binary tree data structure where the parent’s value is the sum of its children
 import torch
 
-from dqn.ReplayBuffer import Experience, device
+from src.v2_dqn.ReplayBuffer import Experience, device
 
 
 class SumTree:

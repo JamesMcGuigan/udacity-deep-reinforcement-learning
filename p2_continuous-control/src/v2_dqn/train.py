@@ -1,3 +1,4 @@
+import os
 import time
 from collections import deque
 
@@ -5,10 +6,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 from unityagents import UnityEnvironment
 
-from dqn.ReplayBuffer import Experience
-from dqn.dqn_agent import DQNPolicyAgent
-from dqn.model import QPolicyNetwork
-from src.libs.contextmanager import capture
+from src.v2_dqn.ReplayBuffer import Experience
+from src.v2_dqn.dqn_agent import DQNPolicyAgent
+from src.v2_dqn.model import QPolicyNetwork
+from src.v1_handcoded.libs.contextmanager import capture
 
 
 def train_dqn(
@@ -133,6 +134,7 @@ def train_dqn(
 
 
 if __name__ == '__main__':
+    os.chdir(os.path.join(os.path.dirname(__file__), '../..'))  # ensure cwd in project root
     env   = UnityEnvironment(file_name="./unity/Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86_64")
     state_size, action_size = DQNPolicyAgent.get_env_state_action_size(env)  #  state_size == 37, action_size == 4
 

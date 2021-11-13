@@ -2,7 +2,7 @@ import torch
 from torch import nn, tensor
 import torch.nn.functional as F
 
-from src.libs.device import device
+from src.v1_handcoded.libs.device import device
 
 
 class FCNet(nn.Module):

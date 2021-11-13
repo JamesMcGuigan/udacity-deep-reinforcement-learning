@@ -6,12 +6,12 @@ import os
 from unityagents import UnityEnvironment
 
 from libs.env import get_env_state_action_agents_size
-from src.agents.ActorCriticMontyCarloAgent import ActorCriticMontyCarloAgent
-from src.agents.AgentA2C import AgentA2C
-from src.libs.contextmanager import capture
+from src.v1_handcoded.agents.AgentA2C import AgentA2C
+from src.v1_handcoded.libs.contextmanager import capture
+from src.v1_handcoded.libs.device import device
 
 if __name__ == '__main__':
-    os.chdir(os.path.join(os.path.dirname(__file__), '..'))  # ensure cwd in project root
+    os.chdir(os.path.join(os.path.dirname(__file__), '../..'))  # ensure cwd in project root
     # env = UnityEnvironment(file_name='./unity/Reacher_Linux_NoVis/Reacher.x86_64')
     env = UnityEnvironment(file_name='./unity/Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86_64')
     # env = UnityEnvironment(file_name='./unity/Crawler_Linux_NoVis/Crawler.x86_64')
