@@ -2,13 +2,18 @@
 
 [image1]: https://user-images.githubusercontent.com/10624937/42135608-be87357e-7d12-11e8-8eca-e6d5fabdba6b.gif "Trained Agent"
 
+This is a copy/paste codebase from ddpg-bipedal
 
 # Actor-Critic Methods
 
 ### Instructions
 
-Open `DDPG.ipynb` to see an implementation of DDPG with OpenAI Gym's BipedalWalker environment.
+```
+~/.anaconda3/envs/drlnd/bin/python3 ./src/v4_ddpg_bipedal/train.py 2&>1 | tee ./src/v4_ddpg_bipedal/train.log
+```
 
 ### Results
 
-![Trained Agent][image1]
+```
+Environment unsolved after 20000 episodes!	Average Score: 0.01 | Time: 4029s
+```
