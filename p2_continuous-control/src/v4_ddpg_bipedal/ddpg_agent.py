@@ -9,6 +9,8 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
+from src.v1_handcoded.agents.Agent import Agent
+
 BUFFER_SIZE = int(1e6)  # replay buffer size
 BATCH_SIZE = 128        # minibatch size
 GAMMA = 0.99            # discount factor
@@ -19,10 +21,10 @@ WEIGHT_DECAY = 0.0001   # L2 weight decay
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-class Agent():
+class DDPGAgent(Agent):
     """Interacts with and learns from the environment."""
     
-    def __init__(self, state_size, action_size, random_seed):
+    def __init__(self, state_size, action_size, random_seed=42):
         """Initialize an Agent object.
         
         Params
@@ -31,6 +33,7 @@ class Agent():
             action_size (int): dimension of each action
             random_seed (int): random seed
         """
+        super().__init__(state_size, action_size, num_agents=1, params={})
         self.state_size = state_size
         self.action_size = action_size
         self.seed = random.seed(random_seed)
