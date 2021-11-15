@@ -1,0 +1,234 @@
+Found path: /home/jamie/code/udacity-deep-reinforcement-learning/p2_continuous-control/./unity/Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis.x86_64
+Mono path[0] = '/home/jamie/code/udacity-deep-reinforcement-learning/p2_continuous-control/./unity/Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis_Data/Managed'
+Mono config path = '/home/jamie/code/udacity-deep-reinforcement-learning/p2_continuous-control/./unity/Reacher_One_Linux_NoVis/Reacher_One_Linux_NoVis_Data/MonoBleedingEdge/etc'
+Preloaded 'libgrpc_csharp_ext.x64.so'
+Unable to preload the following plugins:
+	libgrpc_csharp_ext.x86.so
+
+Logging to /home/jamie/.config/unity3d/Unity Technologies/Unity Environment/Player.log
+
+INFO:unityagents:
+'Academy' started successfully!
+Unity Academy name: Academy
+        Number of Brains: 1
+        Number of External Brains : 1
+        Lesson number : 0
+        Reset Parameters :
+                goal_speed -> 1.0
+                goal_size -> 5.0
+Unity brain name: ReacherBrain
+        Number of Visual Observations (per agent): 0
+        Vector Observation space type: continuous
+        Vector Observation space size (per agent): 33
+        Number of stacked Vector Observation: 1
+        Vector Action space type: continuous
+        Vector Action space size (per agent): 4
+        Vector Action descriptions: , , ,
+
+config: {'model_name': '', 'agent_class': <class 'src.v4_ddpg_bipedal.ddpg_agent.DDPGAgent'>, 'params': {}}
+train( {'n_episodes': 20000, 'max_t': 100, 'eps_start': 1.0, 'eps_end': 0.01, 'eps_decay': 0.995, 'score_window_size': 100, 'win_score': 30, 'obs_attr': 'vector_observations', 'use_future_reward': False}
+
+Episode  100	Average Score: 0.01
+Episode  200	Average Score: 0.00
+Episode  300	Average Score: 0.01
+Episode  400	Average Score: 0.00
+Episode  500	Average Score: 0.01
+Episode  600	Average Score: 0.01
+Episode  700	Average Score: 0.01
+Episode  800	Average Score: 0.00
+Episode  900	Average Score: 0.01
+Episode 1000	Average Score: 0.00
+Episode 1100	Average Score: 0.01
+Episode 1200	Average Score: 0.01
+Episode 1300	Average Score: 0.00
+Episode 1400	Average Score: 0.01
+Episode 1500	Average Score: 0.01
+Episode 1600	Average Score: 0.01
+Episode 1700	Average Score: 0.01
+Episode 1800	Average Score: 0.01
+Episode 1900	Average Score: 0.01
+Episode 2000	Average Score: 0.00
+Episode 2100	Average Score: 0.01
+Episode 2200	Average Score: 0.01
+Episode 2300	Average Score: 0.01
+Episode 2400	Average Score: 0.01
+Episode 2500	Average Score: 0.01
+Episode 2600	Average Score: 0.01
+Episode 2700	Average Score: 0.01
+Episode 2800	Average Score: 0.01
+Episode 2900	Average Score: 0.01
+Episode 3000	Average Score: 0.01
+Episode 3100	Average Score: 0.01
+Episode 3200	Average Score: 0.01
+Episode 3300	Average Score: 0.01
+Episode 3400	Average Score: 0.01
+Episode 3500	Average Score: 0.01
+Episode 3600	Average Score: 0.00
+Episode 3700	Average Score: 0.00
+Episode 3800	Average Score: 0.01
+Episode 3900	Average Score: 0.01
+Episode 4000	Average Score: 0.01
+Episode 4100	Average Score: 0.01
+Episode 4200	Average Score: 0.01
+Episode 4300	Average Score: 0.01
+Episode 4400	Average Score: 0.01
+Episode 4500	Average Score: 0.01
+Episode 4600	Average Score: 0.01
+Episode 4700	Average Score: 0.01
+Episode 4800	Average Score: 0.01
+Episode 4900	Average Score: 0.00
+Episode 5000	Average Score: 0.01
+Episode 5100	Average Score: 0.01
+Episode 5200	Average Score: 0.00
+Episode 5300	Average Score: 0.01
+Episode 5400	Average Score: 0.00
+Episode 5500	Average Score: 0.00
+Episode 5600	Average Score: 0.01
+Episode 5700	Average Score: 0.01
+Episode 5800	Average Score: 0.01
+Episode 5900	Average Score: 0.01
+Episode 6000	Average Score: 0.01
+Episode 6100	Average Score: 0.00
+Episode 6200	Average Score: 0.01
+Episode 6300	Average Score: 0.01
+Episode 6400	Average Score: 0.01
+Episode 6500	Average Score: 0.01
+Episode 6600	Average Score: 0.00
+Episode 6700	Average Score: 0.01
+Episode 6800	Average Score: 0.01
+Episode 6900	Average Score: 0.01
+Episode 7000	Average Score: 0.01
+Episode 7100	Average Score: 0.00
+Episode 7200	Average Score: 0.00
+Episode 7300	Average Score: 0.01
+Episode 7400	Average Score: 0.01
+Episode 7500	Average Score: 0.00
+Episode 7600	Average Score: 0.00
+Episode 7700	Average Score: 0.01
+Episode 7800	Average Score: 0.01
+Episode 7900	Average Score: 0.00
+Episode 8000	Average Score: 0.00
+Episode 8100	Average Score: 0.01
+Episode 8200	Average Score: 0.01
+Episode 8300	Average Score: 0.01
+Episode 8400	Average Score: 0.00
+Episode 8500	Average Score: 0.01
+Episode 8600	Average Score: 0.01
+Episode 8700	Average Score: 0.01
+Episode 8800	Average Score: 0.01
+Episode 8900	Average Score: 0.01
+Episode 9000	Average Score: 0.01
+Episode 9100	Average Score: 0.01
+Episode 9200	Average Score: 0.01
+Episode 9300	Average Score: 0.01
+Episode 9400	Average Score: 0.00
+Episode 9500	Average Score: 0.01
+Episode 9600	Average Score: 0.01
+Episode 9700	Average Score: 0.01
+Episode 9800	Average Score: 0.01
+Episode 9900	Average Score: 0.01
+Episode 10000	Average Score: 0.00
+Episode 10100	Average Score: 0.01
+Episode 10200	Average Score: 0.01
+Episode 10300	Average Score: 0.01
+Episode 10400	Average Score: 0.01
+Episode 10500	Average Score: 0.00
+Episode 10600	Average Score: 0.01
+Episode 10700	Average Score: 0.01
+Episode 10800	Average Score: 0.01
+Episode 10900	Average Score: 0.01
+Episode 11000	Average Score: 0.01
+Episode 11100	Average Score: 0.01
+Episode 11200	Average Score: 0.01
+Episode 11300	Average Score: 0.01
+Episode 11400	Average Score: 0.01
+Episode 11500	Average Score: 0.01
+Episode 11600	Average Score: 0.01
+Episode 11700	Average Score: 0.01
+Episode 11800	Average Score: 0.01
+Episode 11900	Average Score: 0.01
+Episode 12000	Average Score: 0.01
+Episode 12100	Average Score: 0.01
+Episode 12200	Average Score: 0.01
+Episode 12300	Average Score: 0.01
+Episode 12400	Average Score: 0.01
+Episode 12500	Average Score: 0.01
+Episode 12600	Average Score: 0.01
+Episode 12700	Average Score: 0.01
+Episode 12800	Average Score: 0.01
+Episode 12900	Average Score: 0.01
+Episode 13000	Average Score: 0.01
+Episode 13100	Average Score: 0.01
+Episode 13200	Average Score: 0.01
+Episode 13300	Average Score: 0.01
+Episode 13400	Average Score: 0.01
+Episode 13500	Average Score: 0.00
+Episode 13600	Average Score: 0.01
+Episode 13700	Average Score: 0.01
+Episode 13800	Average Score: 0.00
+Episode 13900	Average Score: 0.00
+Episode 14000	Average Score: 0.01
+Episode 14100	Average Score: 0.01
+Episode 14200	Average Score: 0.01
+Episode 14300	Average Score: 0.01
+Episode 14400	Average Score: 0.01
+Episode 14500	Average Score: 0.01
+Episode 14600	Average Score: 0.01
+Episode 14700	Average Score: 0.01
+Episode 14800	Average Score: 0.01
+Episode 14900	Average Score: 0.00
+Episode 15000	Average Score: 0.01
+Episode 15100	Average Score: 0.01
+Episode 15200	Average Score: 0.01
+Episode 15300	Average Score: 0.00
+Episode 15400	Average Score: 0.00
+Episode 15500	Average Score: 0.01
+Episode 15600	Average Score: 0.01
+Episode 15700	Average Score: 0.00
+Episode 15800	Average Score: 0.00
+Episode 15900	Average Score: 0.01
+Episode 16000	Average Score: 0.01
+Episode 16100	Average Score: 0.00
+Episode 16200	Average Score: 0.01
+Episode 16300	Average Score: 0.01
+Episode 16400	Average Score: 0.01
+Episode 16500	Average Score: 0.01
+Episode 16600	Average Score: 0.01
+Episode 16700	Average Score: 0.01
+Episode 16800	Average Score: 0.01
+Episode 16900	Average Score: 0.01
+Episode 17000	Average Score: 0.01
+Episode 17100	Average Score: 0.01
+Episode 17200	Average Score: 0.01
+Episode 17300	Average Score: 0.00
+Episode 17400	Average Score: 0.01
+Episode 17500	Average Score: 0.00
+Episode 17600	Average Score: 0.01
+Episode 17700	Average Score: 0.01
+Episode 17800	Average Score: 0.01
+Episode 17900	Average Score: 0.01
+Episode 18000	Average Score: 0.00
+Episode 18100	Average Score: 0.01
+Episode 18200	Average Score: 0.01
+Episode 18300	Average Score: 0.01
+Episode 18400	Average Score: 0.01
+Episode 18500	Average Score: 0.00
+Episode 18600	Average Score: 0.00
+Episode 18700	Average Score: 0.01
+Episode 18800	Average Score: 0.01
+Episode 18900	Average Score: 0.01
+Episode 19000	Average Score: 0.00
+Episode 19100	Average Score: 0.00
+Episode 19200	Average Score: 0.01
+Episode 19300	Average Score: 0.01
+Episode 19400	Average Score: 0.01
+Episode 19500	Average Score: 0.00
+Episode 19600	Average Score: 0.01
+Episode 19700	Average Score: 0.01
+Episode 19800	Average Score: 0.01
+Episode 19900	Average Score: 0.01
+Episode 20000	Average Score: 0.01
+
+Environment unsolved after 20000 episodes!	Average Score: 0.01 | Time: 4029s
+/home/jamie/.anaconda3/envs/drlnd/lib/python3.6/site-packages/torch/nn/functional.py:1794: UserWarning: nn.functional.tanh is deprecated. Use torch.tanh instead.
+  warnings.warn("nn.functional.tanh is deprecated. Use torch.tanh instead.")
