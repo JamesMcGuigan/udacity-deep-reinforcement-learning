@@ -18,6 +18,7 @@ TAU = 1e-3              # for soft update of target parameters
 LR_ACTOR = 1e-4         # learning rate of the actor 
 LR_CRITIC = 3e-4        # learning rate of the critic
 WEIGHT_DECAY = 0.0001   # L2 weight decay
+UPDATE_EVERY = 5
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -37,6 +38,7 @@ class DDPGAgent(Agent):
         self.state_size = state_size
         self.action_size = action_size
         self.seed = random.seed(random_seed)
+        self.t_step = 0
 
         # Actor Network (w/ Target Network)
         self.actor_local = Actor(state_size, action_size, random_seed).to(device)
@@ -60,7 +62,10 @@ class DDPGAgent(Agent):
         self.memory.add(state, action, reward, next_state, done)
 
         # Learn, if enough samples are available in memory
-        if len(self.memory) > BATCH_SIZE:
+        # Learn every UPDATE_EVERY time steps: self.t_step = (self.t_step + 1) % UPDATE_EVERY
+        self.t_step += 1
+        if  ( len(self.memory) > BATCH_SIZE
+          and self.t_step % UPDATE_EVERY == 0 ):
             experiences = self.memory.sample()
             self.learn(experiences, GAMMA)
 

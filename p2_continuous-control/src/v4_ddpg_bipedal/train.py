@@ -35,7 +35,7 @@ if __name__ == '__main__':
             model_name  = config['model_name'] or agent.__class__.__name__
 
             # agent.load()
-            rewards += agent.train(env, n_episodes=20_000)
+            rewards += agent.train(env, n_episodes=2_000)
             # agent.save()
 
         print("".join(stdout))

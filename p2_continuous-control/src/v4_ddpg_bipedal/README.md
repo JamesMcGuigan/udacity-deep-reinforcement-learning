@@ -17,3 +17,9 @@ This is a copy/paste codebase from ddpg-bipedal
 ```
 Environment unsolved after 20000 episodes!	Average Score: 0.01 | Time: 4029s
 ```
+
+
+### Reference
+
+- https://knowledge.udacity.com/questions/741940
+- https://stackoverflow.com/questions/52770780/why-is-my-deep-q-net-and-double-deep-q-net-unstable/52892468#52892468
