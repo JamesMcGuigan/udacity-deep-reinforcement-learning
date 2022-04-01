@@ -1,2 +1,15 @@
+--trusted-host pypi.org
+--trusted-host files.pythonhosted.org -f https://download.pytorch.org/whl/torch_stable.html
+
+# sudo pamac install libstdc++5
+# conda install libstdcxx-ng libstdcxx-devel_linux-64
+# conda update -n base -c defaults conda
+# conda install swig patchelf
+# pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org torch===0.4.1 torchvision===0.4.2 -f https://download.pytorch.org/whl/torch_stable.html
+# pip install
+
 gym[all]
-mujoco-py<2.1,>=2.0
+# box2d-py==2.3.5
+# mujoco-py<2.1,>=2.0
+https://files.pythonhosted.org/packages/37/e5/e7504cb2ded511910c2a2e8f9c9e28af075850eb03a5c5a8daee5d7d9517/mujoco_py-2.1.2.14-py3-none-any.whl
+
