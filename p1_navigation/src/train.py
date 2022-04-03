@@ -137,8 +137,8 @@ def main(banana_path):
     state_size, action_size = DQNAgent.get_env_state_action_size(env)  #  state_size == 37, action_size == 4
 
     configs = [
-        { "model_name": "dqn",           "model_class": QNetwork },
-        { "model_name": "dueling_dqn",   "model_class": DuelingQNetwork },
+        # { "model_name": "dqn",           "model_class": QNetwork },
+        # { "model_name": "dueling_dqn",   "model_class": DuelingQNetwork },
 
         # { "model_name": "dqn@64x64",     "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 64 } },
         # { "model_name": "dqn@64x32",     "model_class": QNetwork,  "kwargs": { "fc1_units": 64, "fc2_units": 32 } },
@@ -148,10 +148,10 @@ def main(banana_path):
         # { "model_name": "dqn@16x8",      "model_class": QNetwork,  "kwargs": { "fc1_units": 16, "fc2_units":  8 } },
         # { "model_name": "dqn@8x8",       "model_class": QNetwork,  "kwargs": { "fc1_units":  8, "fc2_units":  8 } },
 
-        # { "model_name": "dqn@lr=1e-2",   "model_class": QNetwork, "kwargs": { "LR": 1e-2 } },
-        # { "model_name": "dqn@lr=1e-3",   "model_class": QNetwork, "kwargs": { "LR": 1e-3 } },
-        # { "model_name": "dqn@lr=1e-4",   "model_class": QNetwork, "kwargs": { "LR": 1e-4 } },
-        # { "model_name": "dqn@lr=1e-5",   "model_class": QNetwork, "kwargs": { "LR": 1e-5 } },
+        { "model_name": "dqn@lr=1e-2",   "model_class": QNetwork, "kwargs": { "LR": 1e-2 } },
+        { "model_name": "dqn@lr=1e-3",   "model_class": QNetwork, "kwargs": { "LR": 1e-3 } },
+        { "model_name": "dqn@lr=1e-4",   "model_class": QNetwork, "kwargs": { "LR": 1e-4 } },
+        { "model_name": "dqn@lr=1e-5",   "model_class": QNetwork, "kwargs": { "LR": 1e-5 } },
 
         # { "model_name": "dqn@tau=1e-1",    "model_class": QNetwork, "kwargs": { "TAU": 1e-1 } },
         # { "model_name": "dqn@tau=1e-2",    "model_class": QNetwork, "kwargs": { "TAU": 1e-2 } },
@@ -165,7 +165,7 @@ def main(banana_path):
         # { "model_name": "dqn@gamma=0.5",   "model_class": QNetwork, "kwargs": { "GAMMA": 0.5   } },
         # { "model_name": "dqn@gamma=0",     "model_class": QNetwork, "kwargs": { "GAMMA": 0     } },
 
-        # { "model_name": "dqn@memory_type=subtree", "model_class": QNetwork, "kwargs": { "memory_type": 'subtree' } },
+        # { "model_name": "dqn@memory_type=sumtree", "model_class": QNetwork, "kwargs": { "memory_type": 'sumtree' } },
         # { "model_name": "dqn@memory_type=random",  "model_class": QNetwork, "kwargs": { "memory_type": 'random'  } },
     ]
     for config in configs:

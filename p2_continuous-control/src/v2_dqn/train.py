@@ -167,7 +167,7 @@ if __name__ == '__main__':
         # { "model_name": "dqn@gamma=0.5",   "model_class": QNetwork, "kwargs": { "GAMMA": 0.5   } },
         # { "model_name": "dqn@gamma=0",     "model_class": QNetwork, "kwargs": { "GAMMA": 0     } },
 
-        # { "model_name": "dqn@memory_type=subtree", "model_class": QNetwork, "kwargs": { "memory_type": 'subtree' } },
+        # { "model_name": "dqn@memory_type=sumtree", "model_class": QNetwork, "kwargs": { "memory_type": 'sumtree' } },
         # { "model_name": "dqn@memory_type=random",  "model_class": QNetwork, "kwargs": { "memory_type": 'random'  } },
     ]
     for config in configs:

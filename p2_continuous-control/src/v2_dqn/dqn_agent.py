@@ -22,7 +22,7 @@ class DQNPolicyAgent(object):
             granularity  = 20,
             model_class  = QPolicyNetwork,
             update_type  = 'dqn',
-            memory_type  = 'random',  # 'random' or 'subtree' | subtree fails to converge
+            memory_type  = 'random',  # 'random' or 'sumtree' | sumtree fails to converge
             seed         = 42,
             LR           = 1e-3,      # 1e-3 has optimal training times
             GAMMA        = 0.99,      # discount factor
@@ -62,7 +62,7 @@ class DQNPolicyAgent(object):
 
         # Replay memory
         # NOTE: training using SumTreeReplayBuffer fails to converge
-        if   self.memory_type == 'subtree': self.memory = SumTreeReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed)
+        if   self.memory_type == 'sumtree': self.memory = SumTreeReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed)
         elif self.memory_type == 'random':  self.memory = ReplayBuffer(       action_size, BUFFER_SIZE, BATCH_SIZE, seed)
         else: raise ValueError(f'{self.__class__.__name__}() - invalid self.memory_type: {self.memory_type}')
 
