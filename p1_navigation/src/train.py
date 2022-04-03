@@ -1,6 +1,8 @@
 import time
+import os
 from collections import deque
 
+import humanize as humanize
 import numpy as np
 from matplotlib import pyplot as plt
 from unityagents import UnityEnvironment
@@ -130,9 +132,8 @@ def train_dqn(
     return scores
 
 
-
-if __name__ == '__main__':
-    env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
+def main(banana_path):
+    env   = UnityEnvironment(file_name=banana_path)
     state_size, action_size = DQNAgent.get_env_state_action_size(env)  #  state_size == 37, action_size == 4
 
     configs = [
@@ -196,3 +197,13 @@ if __name__ == '__main__':
         plt.xlabel('Episode #')
         plt.savefig(f'models/{model_name}.png', bbox_inches='tight')
         plt.show()
+
+
+if __name__ == '__main__':
+    for banana_path in [
+        "./Banana_Linux/Banana.x86_64",
+        "./Banana.app"
+    ]:
+        print( 'UnityEnvironment:', banana_path, '[', humanize.naturalsize(os.path.getsize(banana_path)), ']' )
+        try:    main(banana_path=banana_path)
+        except Exception as e: print('UnityEnvironment: Exception:', e)

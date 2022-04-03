@@ -1,7 +1,10 @@
+import os
+
+import humanize
 from unityagents import UnityEnvironment
 
 from dqn_agent import DQNAgent
-
+from model import QNetwork, DuelingQNetwork
 
 def evaluate_agent(env, agent):
     brain_name  = env.brain_names[0]
@@ -24,8 +27,24 @@ def evaluate_agent(env, agent):
     print("Score: {}".format(score))
 
 
-if __name__ == '__main__':
-    env   = UnityEnvironment(file_name="./Banana_Linux/Banana.x86_64")
-    agent = DQNAgent.from_env(env)  #  state_size == 37, action_size == 4
-    agent.load('model.pth')
+def main(banana_path, config):
+    env   = UnityEnvironment(banana_path)
+    state_size, action_size = DQNAgent.get_env_state_action_size(env)
+    agent = DQNAgent(state_size, action_size, model_class=config['model_class'], **config.get('kwargs',{}))
+    agent.load(f"models/{config['model_name']}.pth")
     evaluate_agent(env, agent)
+
+
+if __name__ == '__main__':
+    for banana_path in [
+        "./Banana_Linux/Banana.x86_64",
+        "./Banana.app"
+    ]:
+        configs = [
+            { "model_name": "dqn",           "model_class": QNetwork },
+            # { "model_name": "dueling_dqn",   "model_class": DuelingQNetwork },
+        ]
+        for config in configs:
+            print( 'UnityEnvironment:', banana_path, '[', humanize.naturalsize(os.path.getsize(banana_path)), ']', config )
+            try:    main(banana_path=banana_path, config=config)
+            except Exception as e: print('UnityEnvironment: Exception:', e)
