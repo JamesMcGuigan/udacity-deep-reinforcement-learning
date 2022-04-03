@@ -1,4 +1,5 @@
 import os
+import platform
 
 import humanize
 from unityagents import UnityEnvironment
@@ -36,15 +37,15 @@ def main(banana_path, config):
 
 
 if __name__ == '__main__':
-    for banana_path in [
-        "./Banana_Linux/Banana.x86_64",
-        "./Banana.app"
-    ]:
-        configs = [
-            { "model_name": "dqn",           "model_class": QNetwork },
-            # { "model_name": "dueling_dqn",   "model_class": DuelingQNetwork },
-        ]
-        for config in configs:
-            print( 'UnityEnvironment:', banana_path, '[', humanize.naturalsize(os.path.getsize(banana_path)), ']', config )
-            try:    main(banana_path=banana_path, config=config)
-            except Exception as e: print('UnityEnvironment: Exception:', e)
+    if   platform.system() == 'Linux':  banana_path = "./Banana_Linux/Banana.x86_64"
+    elif platform.system() == 'Darwin': banana_path = "./Banana.app"
+    else: raise Exception('No Banana for OS')
+
+    configs = [
+        { "model_name": "dqn",           "model_class": QNetwork },
+        # { "model_name": "dueling_dqn",   "model_class": DuelingQNetwork },
+    ]
+    for config in configs:
+        print( 'UnityEnvironment:', banana_path, '[', humanize.naturalsize(os.path.getsize(banana_path)), ']', config )
+        try:    main(banana_path=banana_path, config=config)
+        except Exception as e: print('UnityEnvironment: Exception:', e)

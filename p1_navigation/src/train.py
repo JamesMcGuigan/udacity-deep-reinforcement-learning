@@ -1,3 +1,4 @@
+import platform
 import time
 import os
 from collections import deque
@@ -200,10 +201,9 @@ def main(banana_path):
 
 
 if __name__ == '__main__':
-    for banana_path in [
-        "./Banana_Linux/Banana.x86_64",
-        "./Banana.app"
-    ]:
-        print( 'UnityEnvironment:', banana_path, '[', humanize.naturalsize(os.path.getsize(banana_path)), ']' )
-        try:    main(banana_path=banana_path)
-        except Exception as e: print('UnityEnvironment: Exception:', e)
+    if   platform.system() == 'Linux':  banana_path = "./Banana_Linux/Banana.x86_64"
+    elif platform.system() == 'Darwin': banana_path = "./Banana.app"
+    else: raise Exception('No Banana for OS')
+
+    print( 'UnityEnvironment:', banana_path, '[', humanize.naturalsize(os.path.getsize(banana_path)), ']' )
+    main(banana_path=banana_path)
